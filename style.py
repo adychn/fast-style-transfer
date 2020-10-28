@@ -1,20 +1,20 @@
 from __future__ import print_function
 import sys, os, pdb
 sys.path.insert(0, 'src')
-import numpy as np, scipy.misc 
+import numpy as np, scipy.misc
 from optimize import optimize
 from argparse import ArgumentParser
 from utils import save_img, get_img, exists, list_files
 import evaluate
 
-CONTENT_WEIGHT = 7.5e0
+CONTENT_WEIGHT = 1.5e1
 STYLE_WEIGHT = 1e2
 TV_WEIGHT = 2e2
 
 LEARNING_RATE = 1e-3
 NUM_EPOCHS = 2
-CHECKPOINT_DIR = 'checkpoints'
-CHECKPOINT_ITERATIONS = 2000
+CHECKPOINT_DIR = 'checkpoint'
+CHECKPOINT_ITERATIONS = 1000
 VGG_PATH = 'data/imagenet-vgg-verydeep-19.mat'
 TRAIN_PATH = 'data/train2014'
 BATCH_SIZE = 4
@@ -25,7 +25,7 @@ def build_parser():
     parser = ArgumentParser()
     parser.add_argument('--checkpoint-dir', type=str,
                         dest='checkpoint_dir', help='dir to save checkpoint in',
-                        metavar='CHECKPOINT_DIR', required=True)
+                        metavar='CHECKPOINT_DIR', default=CHECKPOINT_DIR)
 
     parser.add_argument('--style', type=str,
                         dest='style', help='style image path',
@@ -69,7 +69,7 @@ def build_parser():
                         dest='content_weight',
                         help='content weight (default %(default)s)',
                         metavar='CONTENT_WEIGHT', default=CONTENT_WEIGHT)
-    
+
     parser.add_argument('--style-weight', type=float,
                         dest='style_weight',
                         help='style weight (default %(default)s)',
@@ -79,7 +79,7 @@ def build_parser():
                         dest='tv_weight',
                         help='total variation regularization weight (default %(default)s)',
                         metavar='TV_WEIGHT', default=TV_WEIGHT)
-    
+
     parser.add_argument('--learning-rate', type=float,
                         dest='learning_rate',
                         help='learning rate (default %(default)s)',
@@ -108,14 +108,15 @@ def _get_files(img_dir):
     files = list_files(img_dir)
     return [os.path.join(img_dir,x) for x in files]
 
-    
+
 def main():
-    parser = build_parser()
-    options = parser.parse_args()
+    parser = build_parser() # ArgumentParser()
+    options = parser.parse_args() # call the fucntion then return options
     check_opts(options)
 
-    style_target = get_img(options.style)
+    style_target = get_img(options.style) # a 3-D numpy array
     if not options.slow:
+        # COCO train2014 dataset, roughly 20000 images
         content_targets = _get_files(options.train_path)
     elif options.test:
         content_targets = [options.test]
@@ -125,15 +126,9 @@ def main():
         "epochs":options.epochs,
         "print_iterations":options.checkpoint_iterations,
         "batch_size":options.batch_size,
-        "save_path":os.path.join(options.checkpoint_dir,'fns.ckpt'),
+        "save_path":os.path.join(options.checkpoint_dir, 'fast_style_transfer.ckpt'),
         "learning_rate":options.learning_rate
     }
-
-    if options.slow:
-        if options.epochs < 10:
-            kwargs['epochs'] = 1000
-        if options.learning_rate < 1:
-            kwargs['learning_rate'] = 1e1
 
     args = [
         content_targets,
@@ -144,24 +139,30 @@ def main():
         options.vgg_path
     ]
 
-    for preds, losses, i, epoch in optimize(*args, **kwargs):
-        style_loss, content_loss, tv_loss, loss = losses
+    if options.slow:
+        if options.epochs < 10:
+            kwargs['epochs'] = 1000
+        if options.learning_rate < 1:
+            kwargs['learning_rate'] = 1e1
 
-        print('Epoch %d, Iteration: %d, Loss: %s' % (epoch, i, loss))
-        to_print = (style_loss, content_loss, tv_loss)
-        print('style: %s, content:%s, tv: %s' % to_print)
+    for generated_image, losses, i, epoch in optimize(*args, **kwargs):
+        style_loss, content_loss, tv_loss, total_loss = losses
+        print(f"Epoch: {epoch}, Iteration: {i} ......")
+        print(f"Total_loss: {total_loss}, Style_loss: {style_loss}, \
+                Content_loss: {content_loss}, Total_Variation_loss: {tv_loss}.")
+
         if options.test:
             assert options.test_dir != False
-            preds_path = '%s/%s_%s.png' % (options.test_dir,epoch,i)
+            preds_path = f"{options.test_dir}/{epoch}_{i}.png"
             if not options.slow:
                 ckpt_dir = os.path.dirname(options.checkpoint_dir)
-                evaluate.ffwd_to_img(options.test,preds_path,
-                                     options.checkpoint_dir)
+                evaluate.ffwd_to_img(options.test, preds_path, options.checkpoint_dir)
             else:
                 save_img(preds_path, img)
-    ckpt_dir = options.checkpoint_dir
-    cmd_text = 'python evaluate.py --checkpoint %s ...' % ckpt_dir
-    print("Training complete. For evaluation:\n    `%s`" % cmd_text)
+
+    cmd_text = f"python evaluate.py --checkpoint {options.checkpoint_dir} \
+                                    --in-path [in_picture] --out-path [out_picture]"
+    print(f"Training complete. For evaluation, type: {cmd_text}")
 
 if __name__ == '__main__':
     main()
