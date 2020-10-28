@@ -1,0 +1,3 @@
+python style.py --checkpoint-dir checkpoint --style style/wave.jpg
+
+python evaluate.py --in-path content/tesla3_L.jpeg --out-path result
