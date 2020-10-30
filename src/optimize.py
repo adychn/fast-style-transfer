@@ -40,8 +40,11 @@ def optimize(content_targets, style_target, content_weight, style_weight,
     # vgg won't be trained, because in vgg.py the weights are loaded through that matlab file.
     # computed vgg style features in gram matrices
     # tf.device('/cpu:0')
+    config = v1.ConfigProto()
+    config.gpu_options.allow_growth = True
+
     style_features = {}
-    with tf.Graph().as_default(), v1.Session() as sess:
+    with tf.Graph().as_default(), v1.Session(config=config) as sess:
         style_image = v1.placeholder(tf.float32, shape=style_shape, name='style_image') # 4-D placeholder for feed_dict
         vgg_style_net = vgg.net(vgg_path, vgg.preprocess(style_image)) # extract feature volume
         np_style_target = np.array([style_target]) # a 3-D numpy array for feed_dict's input
@@ -55,7 +58,7 @@ def optimize(content_targets, style_target, content_weight, style_weight,
             style_features[layer] = gram
 
     # computed vgg content feature map and both losses
-    with tf.Graph().as_default(), v1.Session() as sess:
+    with tf.Graph().as_default(), v1.Session(config=config) as sess:
         X_content = v1.placeholder(tf.float32, shape=batch_shape, name="X_content") # 4-D
         vgg_content_net = vgg.net(vgg_path, vgg.preprocess(X_content)) # run image through the pre-trained model
 

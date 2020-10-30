@@ -1,4 +1,6 @@
 import tensorflow as tf, pdb
+import tensorflow.compat.v1 as v1
+import sys
 
 WEIGHTS_INIT_STDEV = .1
 
@@ -21,40 +23,73 @@ def _conv_layer(net, num_filters, filter_size, strides, relu=True):
     weights_init = _conv_init_vars(net, num_filters, filter_size)
     strides_shape = [1, strides, strides, 1]
     net = tf.nn.conv2d(input=net, filters=weights_init, strides=strides_shape, padding='SAME')
-    net = _instance_norm(net)
+    # net = _instance_norm(net)
+    net = _batch_instance_norm(net)
     if relu:
         net = tf.nn.relu(net)
-
     return net
 
 def _conv_tranpose_layer(net, num_filters, filter_size, strides):
     weights_init = _conv_init_vars(net, num_filters, filter_size, transpose=True)
-
     batch_size, rows, cols, in_channels = [i for i in net.get_shape()]
-    new_rows, new_cols = int(rows * strides), int(cols * strides)
-    # new_shape = #tf.pack([tf.shape(net)[0], new_rows, new_cols, num_filters])
 
-    new_shape = [batch_size, new_rows, new_cols, num_filters]
+    new_shape = [batch_size, int(rows * strides), int(cols * strides), num_filters]
     tf_shape = tf.stack(new_shape)
-    strides_shape = [1,strides,strides,1]
+    strides_shape = [1, strides, strides, 1]
 
-    net = tf.nn.conv2d_transpose(net, weights_init, tf_shape, strides_shape, padding='SAME')
-    net = _instance_norm(net)
-    return tf.nn.relu(net)
+    net = tf.nn.conv2d_transpose(input=net, filters=weights_init, output_shape=tf_shape,
+                                 strides=strides_shape, padding='SAME')
+    # net = _instance_norm(net)
+    net = _batch_instance_norm(net)
+    net = tf.nn.relu(net)
+    return net
 
 def _residual_block(net, filter_size=3):
     tmp = _conv_layer(net, 128, filter_size, 1)
-    return net + _conv_layer(tmp, 128, filter_size, 1, relu=False)
+    tmp = _conv_layer(tmp, 128, filter_size, 1)
+    return net + tmp
 
-def _instance_norm(net, train=True):
-    batch, rows, cols, channels = [i for i in net.get_shape()]
-    var_shape = [channels]
-    mu, sigma_sq = tf.nn.moments(x=net, axes=[1,2], keepdims=True)
-    shift = tf.Variable(tf.zeros(var_shape))
-    scale = tf.Variable(tf.ones(var_shape))
-    epsilon = 1e-3
-    normalized = (net-mu)/(sigma_sq + epsilon)**(.5)
-    return scale * normalized + shift
+def _instance_norm(x):
+    N, H, W, C = [i for i in x.get_shape()]
+    eps = 1e-5
+
+    # normalzied, (N, H, W, C)
+    mean, var = tf.nn.moments(x, axes=[1, 2], keepdims=True)
+    x = (x - mean) / tf.sqrt(var + eps)
+
+    # per-channel learnable linear transform
+    gamma = tf.Variable(tf.ones([C]))
+    beta = tf.Variable(tf.zeros([C]))
+    x_hat = x * gamma + beta
+
+    return x_hat
+
+def _batch_instance_norm(x, train=True):
+    N, H, W, C = [i for i in x.get_shape()]
+    eps = 1e-5
+
+    # batch normalized, for better detection of the pre-transformed object
+    batch_mean, batch_var = tf.nn.moments(x, axes=[0, 1, 2], keepdims=True)
+    x_batch = (x - batch_mean) / tf.sqrt(batch_var + eps)
+
+    # instance normalizaed, for style manipulation
+    ins_mean, ins_var = tf.nn.moments(x, axes=[1, 2], keepdims=True)
+    x_ins = (x - ins_mean) / tf.sqrt(ins_var + eps)
+
+    # rho = v1.get_variable("rhoo", [C], initializer=tf.constant_initializer(1.0),
+    #         constraint=lambda x: tf.clip_by_value(x, clip_value_min=0.0, clip_value_max=1.0))
+    # gamma = v1.get_variable("gammaa", [C], initializer=tf.constant_initializer(1.0))
+    # beta = v1.get_variable("betaa", [C], initializer=tf.constant_initializer(0.0))
+
+    rho = tf.Variable(tf.ones([C]),
+            constraint=lambda x: tf.clip_by_value(x, clip_value_min=0.0, clip_value_max=1.0))
+    gamma = tf.Variable(tf.ones([C]))
+    beta = tf.Variable(tf.zeros([C]))
+
+    x_hat = rho * x_batch + (1 - rho) * x_ins
+    x_hat = x_hat * gamma + beta
+
+    return x_hat
 
 def _conv_init_vars(net, out_channels, filter_size, transpose=False):
     _, rows, cols, in_channels = [i for i in net.get_shape()]
@@ -62,6 +97,13 @@ def _conv_init_vars(net, out_channels, filter_size, transpose=False):
         weights_shape = [filter_size, filter_size, in_channels, out_channels]
     else:
         weights_shape = [filter_size, filter_size, out_channels, in_channels]
-
-    weights_init = tf.Variable(tf.random.truncated_normal(weights_shape, stddev=WEIGHTS_INIT_STDEV, seed=1), dtype=tf.float32)
+    normal_init = tf.random.truncated_normal(weights_shape, stddev=WEIGHTS_INIT_STDEV, seed=1)
+    weights_init = tf.Variable(normal_init, dtype=tf.float32)
     return weights_init
+
+def main():
+    preds = net(sys.argv[-1])
+    print(preds.shape)
+
+if __name__ == '__main__':
+    main()

@@ -1,3 +1,3 @@
-python style.py --checkpoint-dir checkpoint --style style/wave.jpg
+python style.py --checkpoint-dir [ffwd_style_network_name] --style style/wave.jpg
 
-python evaluate.py --in-path content/tesla3_L.jpeg --out-path result
+python evaluate.py --checkpoint art1 --in-path content/tesla3.jpeg --out-path result/art1.jpg
