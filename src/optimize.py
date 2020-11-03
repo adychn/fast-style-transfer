@@ -105,15 +105,16 @@ def optimize(content_targets, style_target, content_weight, style_weight,
 
         # total variation denoising regularization loss
         # test if not needed in NN conv case and mirror padding
-        tv_y_size = _tensor_size(preds[:,1:,:,:])
-        tv_x_size = _tensor_size(preds[:,:,1:,:])
-        # N, H, W, C
-        y_tv = 2 * tf.nn.l2_loss(preds[:, 1:, :, :] - preds[:, :batch_shape[1]-1, :, :]) # H, down - up
-        x_tv = 2 * tf.nn.l2_loss(preds[:, :, 1:, :] - preds[:, :, :batch_shape[2]-1, :]) # W, right - left
-        tv_loss = tv_weight * (x_tv/tv_x_size + y_tv/tv_y_size) / batch_size
+        # tv_y_size = _tensor_size(preds[:,1:,:,:])
+        # tv_x_size = _tensor_size(preds[:,:,1:,:])
+        # # N, H, W, C
+        # y_tv = 2 * tf.nn.l2_loss(preds[:, 1:, :, :] - preds[:, :batch_shape[1]-1, :, :]) # H, down - up
+        # x_tv = 2 * tf.nn.l2_loss(preds[:, :, 1:, :] - preds[:, :, :batch_shape[2]-1, :]) # W, right - left
+        # tv_loss = tv_weight * (x_tv/tv_x_size + y_tv/tv_y_size) / batch_size
 
         # total loss
-        total_loss = content_loss + style_loss + tv_loss
+        # total_loss = content_loss + style_loss + tv_loss
+        total_loss = content_loss + style_loss
 
         # train the feed forward net, and save weights to a checkpoint.
         import random
@@ -151,10 +152,10 @@ def optimize(content_targets, style_target, content_weight, style_weight,
                     print("UID: %s, batch training time: %s" % (uid, end_time - start_time))
                 # monitor the training losses
                 if is_print_iter or is_last_train:
-                    _style_loss, _content_loss, _tv_loss, _total_loss, _preds = \
-                        sess.run([style_loss, content_loss, tv_loss, total_loss, preds],
+                    _style_loss, _content_loss, _total_loss, _preds = \
+                        sess.run([style_loss, content_loss, total_loss, preds],
                                   feed_dict={X_content:X_batch})
-                    losses = (_style_loss, _content_loss, _tv_loss, _total_loss)
+                    losses = (_style_loss, _content_loss, _total_loss)
                     generated_image = _preds
 
                     if slow:

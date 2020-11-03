@@ -149,10 +149,9 @@ def main():
             kwargs['learning_rate'] = 1e1
 
     for generated_image, losses, i, epoch in optimize(*args, **kwargs):
-        style_loss, content_loss, tv_loss, total_loss = losses
+        style_loss, content_loss, total_loss = losses
         print(f"Epoch: {epoch}, Iteration: {i} ......")
-        print(f"Total_loss: {total_loss}, Style_loss: {style_loss}, \
-                Content_loss: {content_loss}, Total_Variation_loss: {tv_loss}.")
+        print(f"Total_loss: {total_loss}, Style_loss: {style_loss}, Content_loss: {content_loss}.")
 
         if options.test:
             assert options.test_dir != False
