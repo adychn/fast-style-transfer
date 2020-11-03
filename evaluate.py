@@ -16,7 +16,7 @@ from moviepy.video.io.VideoFileClip import VideoFileClip
 import moviepy.video.io.ffmpeg_writer as ffmpeg_writer
 
 BATCH_SIZE = 4
-DEVICE = '/gpu:0'
+DEVICE = '/cpu:0' # using GPU will run out of memory on large pictures.
 CHECKPOINT_DIR = 'checkpoint'
 
 def ffwd_video(path_in, path_out, checkpoint_dir, device_t='/gpu:0', batch_size=4):

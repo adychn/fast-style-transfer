@@ -60,7 +60,7 @@ def optimize(content_targets, style_target, content_weight, style_weight,
     # computed vgg content feature map and both losses
     with tf.Graph().as_default(), v1.Session(config=config) as sess:
         X_content = v1.placeholder(tf.float32, shape=batch_shape, name="X_content") # 4-D
-        vgg_content_net = vgg.net(vgg_path, vgg.preprocess(X_content)) # run image through the pre-trained model
+        vgg_content_net = vgg.net(vgg_path, vgg.preprocess(X_content)) # run ground truth image through the pre-trained model
 
         # noisy prediction image runs through feed forward conv net, then
         # run through vgg to extract feature volume predicitons
@@ -71,12 +71,18 @@ def optimize(content_targets, style_target, content_weight, style_weight,
             preds_pre = preds
         else:
             preds = transform.net(X_content/255.0) # run through the style feed forward network. why need to normalize pixel to 0-1?
-        net = vgg.net(vgg_path, vgg.preprocess(preds))
+        net = vgg.net(vgg_path, vgg.preprocess(preds)) # run generated image through the pre-trained model
 
         # _tensor_size is a reduce function only count from [1:],
         # so it doesn't have batch_size information.
         content_size = _tensor_size(vgg_content_net[CONTENT_LAYER]) * batch_size
-        assert _tensor_size(vgg_content_net[CONTENT_LAYER]) == _tensor_size(net[CONTENT_LAYER])
+        vgg_content_net_size = _tensor_size(vgg_content_net[CONTENT_LAYER])
+        vgg_transform_content_net_size = _tensor_size(net[CONTENT_LAYER])
+        # print(f"vgg_content_net_size is {vgg_content_net_size}")
+        # print(vgg_content_net[CONTENT_LAYER])
+        # print(f"vgg_transform_content_net_size is {vgg_transform_content_net_size}")
+        # print(net[CONTENT_LAYER])
+        assert vgg_content_net_size == vgg_transform_content_net_size
 
         # define loss functions
         # content loss

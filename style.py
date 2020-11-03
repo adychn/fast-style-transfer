@@ -23,7 +23,7 @@ FRAC_GPU = 1
 
 def build_parser():
     parser = ArgumentParser()
-    parser.add_argument('--checkpoint-dir', type=str,
+    parser.add_argument('--checkpoint', type=str,
                         dest='checkpoint_dir', help='dir to save checkpoint in',
                         metavar='CHECKPOINT_DIR', default=CHECKPOINT_DIR)
 
