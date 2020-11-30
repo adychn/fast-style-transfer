@@ -20,27 +20,31 @@ The below images are trained with 2 epochs and a batch size of 4. The no TV deno
 
 Style Image
 
-<img src = 'style/wave.jpg' width='350px'>
+<img src = 'style/wave.jpg' width='700px'>
 
 Content Image
 
-<img src = 'content/COCO_train2014_000000000471.jpg' width='350px'>
-<img src = 'content/COCO_train2014_000000000722.jpg' width='350px'>
+<img src = 'content/COCO_train2014_000000000471.jpg' width='700px'>
+<img src = 'content/COCO_train2014_000000000722.jpg' width='700px'>
+<img src = 'content/tesla3.jpeg' width='700px'>
 
 Created with Instance Normalization.
 
-<img src = 'result/COCO_train2014_000000000471_wave_IN.jpg'>
-<img src = 'result/COCO_train2014_000000000722_wave_IN.jpg'>
+<img src = 'result/COCO_train2014_000000000471_wave_IN.jpg' width='700px'>
+<img src = 'result/COCO_train2014_000000000722_wave_IN.jpg' width='700px'>
+<img src = 'result/tesla3_wave_IN.jpeg' width='700px'>
 
 Created with Batch-Instance Normalization.
 
-<img src = 'result/COCO_train2014_000000000471_wave_NNresize_BIN.jpg'>
-<img src = 'result/COCO_train2014_000000000722_wave_NNresize_BIN.jpg'>
+<img src = 'result/COCO_train2014_000000000471_wave_NNresize_BIN.jpg' width='700px'>
+<img src = 'result/COCO_train2014_000000000722_wave_NNresize_BIN.jpg' width='700px'>
+<img src = 'result/tesla3_wave_NNresize_BIN.jpeg' width='700px'> 
 
 Created with Batch-Instance Normalization without total denoising regularization.
 
-<img src = 'result/COCO_train2014_000000000471_wave_NNresize_BIN_noTVdenoising.jpg'>
-<img src = 'result/COCO_train2014_000000000722_wave_NNresize_BIN_noTVdenoising.jpg'>
+<img src = 'result/COCO_train2014_000000000471_wave_NNresize_BIN_noTVdenoising.jpg' width='700px'>
+<img src = 'result/COCO_train2014_000000000722_wave_NNresize_BIN_noTVdenoising.jpg' width='700px'>
+<img src = 'result/tesla3_wave_NNresize_BIN_noTVdenoising.jpeg' width='700px'> 
 
 
 ## Fast Style Transfer in [TensorFlow](https://github.com/tensorflow/tensorflow)
