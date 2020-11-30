@@ -14,6 +14,7 @@ Make sure to create a "result" directory first if there isn't one, this is where
 If you trained with Instance Normalzation, please name your checkpoint directory with "_IN" in the checkpoint folder name, it uses this property to add a --IN flag for doing Instance Normalization.
 
 ## Image Results
+The below images are trained with 2 epochs and a batch size of 4. The no TV denoising one may improve image clarity with higher epochs, I suspect the training isn't enough to generate an equally good image as the denoising one.
 
 Style Image
 <img src = 'style/wave.jpg' width='350px'>
