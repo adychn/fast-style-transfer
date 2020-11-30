@@ -7,6 +7,7 @@
 It runs on Tensorflow 2.
 
 ## run.py
+Usage: python run.py [input_image]
 Use run.py for evaluating single or multiple trained stylized feed-forward networks (checkpoints). You just need to update the list of checkpoints name at line 19 to your checkpoint names.
 
 Make sure to create a "result" directory first if there isn't one, this is where output images will be saves.
