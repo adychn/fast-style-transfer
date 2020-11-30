@@ -20,15 +20,17 @@ Style Image
 Content Image
 <img src = 'content/COCO_train2014_000000000471.jpg' width='350px'>
 
-<img src = 'result/COCO_train2014_000000000471_wave_IN.jpg'>
 Created with Instance Normalization.
 
-<img src = 'result/COCO_train2014_000000000471_wave_NNresize_BIN.jpg'>
+<img src = 'result/COCO_train2014_000000000471_wave_IN.jpg'>
+
 Created with Batch-Instance Normalization.
 
-<img src = 'result/COCO_train2014_000000000471_wave_NNresize_BIN_noTVdenoising.jpg'>
+<img src = 'result/COCO_train2014_000000000471_wave_NNresize_BIN.jpg'>
+
 Created with Batch-Instance Normalization without total denoising regularization.
 
+<img src = 'result/COCO_train2014_000000000471_wave_NNresize_BIN_noTVdenoising.jpg'>
 
 
 ## Fast Style Transfer in [TensorFlow](https://github.com/tensorflow/tensorflow)
