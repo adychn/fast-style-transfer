@@ -1,3 +1,41 @@
+## Changes on this Branch
+1. Add Batch-Instance Normalization capability. Can still use the default Instance Normalization with --IN flag during training and inference. # Paper: Batch-Instance Normalization for Adaptively Style-Invariant Neural Networks.
+2. The feed forward netowrk uses nearest neighbor to up size the image, then do a same size conv2d op. Instead of doing a conv2d_transpose op. # Better Upsampling, https://distill.pub/2016/deconv-checkerboard/
+3. Remove the unnesssary total variation denoising regularization loss, due to #2 improvement. # Paper: A Learned Representation for Artistic Style.
+4. Clean up and add comments throughout the codes. The comments are useful for someone who wants to study and understand this code.
+
+It runs on Tensorflow 2.
+
+## run.py
+Usage: python run.py [input_image]
+
+Use run.py for evaluating single or multiple trained stylized feed-forward networks (checkpoints). You just need to update the list of checkpoints name at line 19 to your checkpoint names.
+
+Make sure to create a "result" directory first if there isn't one, this is where output images will be saves.
+
+If you trained with Instance Normalzation, please name your checkpoint directory with "_IN" in the checkpoint folder name, it uses this property to add a --IN flag for doing Instance Normalization.
+
+## Image Results
+The below images are trained with 2 epochs and a batch size of 4. The no TV denoising one may improve image clarity with higher epochs, I suspect the training isn't enough to generate an equally good image as the denoising one.
+
+Style Image
+<img src = 'style/wave.jpg' width='350px'>
+Content Image
+<img src = 'content/COCO_train2014_000000000471.jpg' width='350px'>
+
+Created with Instance Normalization.
+
+<img src = 'result/COCO_train2014_000000000471_wave_IN.jpg'>
+
+Created with Batch-Instance Normalization.
+
+<img src = 'result/COCO_train2014_000000000471_wave_NNresize_BIN.jpg'>
+
+Created with Batch-Instance Normalization without total denoising regularization.
+
+<img src = 'result/COCO_train2014_000000000471_wave_NNresize_BIN_noTVdenoising.jpg'>
+
+
 ## Fast Style Transfer in [TensorFlow](https://github.com/tensorflow/tensorflow)
 
 Add styles from famous paintings to any photo in a fraction of a second! [You can even style videos!](#video-stylization)
