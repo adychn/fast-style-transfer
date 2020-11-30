@@ -4,35 +4,39 @@ import sys
 
 WEIGHTS_INIT_STDEV = .1
 
-def net(image):
-    conv1 = _conv_layer(image, 32, filter_size=9, strides=1) # same
-    conv2 = _conv_layer(conv1, 64, filter_size=3, strides=2) # divide by 2
-    conv3 = _conv_layer(conv2, 128, filter_size=3, strides=2) # divide by 2
-    resid1 = _residual_block(conv3, filter_size=3) # same
-    resid2 = _residual_block(resid1, 3) # same
-    resid3 = _residual_block(resid2, 3) # same
-    resid4 = _residual_block(resid3, 3) # same
-    resid5 = _residual_block(resid4, 3) # same
-    conv_t1 = _conv_tranpose_layer(resid5, 64, filter_size=3, strides=2) # multiply by 2
-    conv_t2 = _conv_tranpose_layer(conv_t1, 32, filter_size=3, strides=2) # multiply by 2
-    conv_t3 = _conv_layer(conv_t2, 3, filter_size=9, strides=1, relu=False) # same
+def net(image, use_IN):
+    conv1 = _conv_layer(image, 32, use_IN, filter_size=9, strides=1) # same
+    conv2 = _conv_layer(conv1, 64, use_IN, filter_size=3, strides=2) # divide by 2
+    conv3 = _conv_layer(conv2, 128, use_IN, filter_size=3, strides=2) # divide by 2
+    resid1 = _residual_block(conv3, use_IN, filter_size=3) # same
+    resid2 = _residual_block(resid1, use_IN, 3) # same
+    resid3 = _residual_block(resid2, use_IN, 3) # same
+    resid4 = _residual_block(resid3, use_IN, 3) # same
+    resid5 = _residual_block(resid4, use_IN, 3) # same
+    conv_t1 = _conv_tranpose_layer(resid5, 64, use_IN, filter_size=3, strides=2) # multiply by 2
+    conv_t2 = _conv_tranpose_layer(conv_t1, 32, use_IN, filter_size=3, strides=2) # multiply by 2
+    conv_t3 = _conv_layer(conv_t2, 3, use_IN, filter_size=9, strides=1, relu=False) # same
     preds = tf.nn.tanh(conv_t3) * 150 + 255./2
     return preds
 
 # padding with SAME plus stride of 1 will keep the same size output image.
-def _conv_layer(net, out_channels, filter_size, strides, relu=True):
+def _conv_layer(net, out_channels, use_IN, filter_size, strides, relu=True):
     filters_init = _conv_init_vars(net, out_channels, filter_size)
     strides_shape = [1, strides, strides, 1]
     net = tf.nn.conv2d(input=net, filters=filters_init, strides=strides_shape, padding='SAME')
-    # net = _instance_norm(net)
-    net = _batch_instance_norm(net)
+
+    if use_IN:
+        net = _instance_norm(net)
+    else:
+        net = _batch_instance_norm(net)
+
     if relu:
         net = tf.nn.relu(net)
     return net
 
 # SAME: output_size = input_size * stride
 # VALID: output_size = (input_size - 1) * stride + filter_size
-def _conv_tranpose_layer(net, out_channels, filter_size, strides, debug=False):
+def _conv_tranpose_layer(net, out_channels, use_IN, filter_size, strides, debug=False):
     batch_size, rows, cols, in_channels = [i for i in net.get_shape()]
 
     # Better Upsampling, https://distill.pub/2016/deconv-checkerboard/
@@ -55,8 +59,12 @@ def _conv_tranpose_layer(net, out_channels, filter_size, strides, debug=False):
     # tf_shape = tf.stack(new_shape)
     # net = tf.nn.conv2d_transpose(input=net, filters=filters_init, output_shape=tf_shape,
     #                              strides=strides_shape, padding='SAME')
-    # net = _instance_norm(net)
-    net = _batch_instance_norm(net)
+
+    if use_IN:
+        net = _instance_norm(net)
+    else:
+        net = _batch_instance_norm(net)
+
     net = tf.nn.relu(net)
     return net
 
@@ -76,9 +84,9 @@ def _conv_init_vars(net, out_channels, filter_size):   #, transpose=False):
     return filters_init
 
 # padding with SAME plus stride of 1 will keep the same size output image.
-def _residual_block(net, filter_size=3):
-    tmp = _conv_layer(net, 128, filter_size, strides=1)
-    tmp = _conv_layer(tmp, 128, filter_size, strides=1)
+def _residual_block(net, use_IN, filter_size=3):
+    tmp = _conv_layer(net, 128, use_IN, filter_size, strides=1)
+    tmp = _conv_layer(tmp, 128, use_IN, filter_size, strides=1)
     return net + tmp
 
 def _instance_norm(x):

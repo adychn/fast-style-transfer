@@ -19,7 +19,7 @@ BATCH_SIZE = 4
 DEVICE = '/cpu:0' # using GPU will run out of memory on large pictures.
 CHECKPOINT_DIR = 'checkpoint'
 
-def ffwd_video(path_in, path_out, checkpoint_dir, device_t='/gpu:0', batch_size=4):
+def ffwd_video(path_in, path_out, checkpoint_dir, use_IN, device_t='/gpu:0', batch_size=4):
     video_clip = VideoFileClip(path_in, audio=False)
     video_writer = ffmpeg_writer.FFMPEG_VideoWriter(path_out, video_clip.size, video_clip.fps, codec="libx264",
                                                     preset="medium", bitrate="2000k",
@@ -35,7 +35,7 @@ def ffwd_video(path_in, path_out, checkpoint_dir, device_t='/gpu:0', batch_size=
         img_placeholder = v1.placeholder(tf.float32, shape=batch_shape,
                                          name='img_placeholder')
 
-        ffwd_net = transform.net(img_placeholder)
+        ffwd_net = transform.net(img_placeholder, use_IN)
         saver = v1.train.Saver()
         if os.path.isdir(checkpoint_dir):
             ckpt = tf.train.get_checkpoint_state(checkpoint_dir)
@@ -70,7 +70,7 @@ def ffwd_video(path_in, path_out, checkpoint_dir, device_t='/gpu:0', batch_size=
 
 
 # get img_shape
-def ffwd(data_in, paths_out, checkpoint_dir, device_t='/gpu:0', batch_size=4):
+def ffwd(data_in, paths_out, checkpoint_dir, use_IN, device_t='/gpu:0', batch_size=4):
     assert len(paths_out) > 0
     is_paths = type(data_in[0]) == str
     if is_paths:
@@ -88,7 +88,7 @@ def ffwd(data_in, paths_out, checkpoint_dir, device_t='/gpu:0', batch_size=4):
     with g.as_default(), g.device(device_t), v1.Session(config=soft_config) as sess:
         batch_shape = (batch_size,) + img_shape
         img_placeholder = v1.placeholder(tf.float32, shape=batch_shape, name='img_placeholder')
-        ffwd_net = transform.net(img_placeholder)
+        ffwd_net = transform.net(img_placeholder, use_IN)
 
         # restore the session for from the checkpoint
         saver = v1.train.Saver()
@@ -126,14 +126,14 @@ def ffwd(data_in, paths_out, checkpoint_dir, device_t='/gpu:0', batch_size=4):
         remaining_in = data_in[num_iters*batch_size:]
         remaining_out = paths_out[num_iters*batch_size:]
     if len(remaining_in) > 0:
-        ffwd(remaining_in, remaining_out, checkpoint_dir,
+        ffwd(remaining_in, remaining_out, checkpoint_dir, use_IN,
             device_t=device_t, batch_size=1)
 
-def ffwd_to_img(in_path, out_path, checkpoint_dir, device='/cpu:0'):
+def ffwd_to_img(in_path, out_path, checkpoint_dir, use_IN, device='/cpu:0'):
     paths_in, paths_out = [in_path], [out_path]
-    ffwd(paths_in, paths_out, checkpoint_dir, batch_size=1, device_t=device)
+    ffwd(paths_in, paths_out, checkpoint_dir, use_IN, batch_size=1, device_t=device)
 
-def ffwd_different_dimensions(in_path, out_path, checkpoint_dir,
+def ffwd_different_dimensions(in_path, out_path, checkpoint_dir, use_IN,
             device_t=DEVICE, batch_size=4):
     in_path_of_shape = defaultdict(list)
     out_path_of_shape = defaultdict(list)
@@ -146,7 +146,7 @@ def ffwd_different_dimensions(in_path, out_path, checkpoint_dir,
     for shape in in_path_of_shape:
         print('Processing images of shape %s' % shape)
         ffwd(in_path_of_shape[shape], out_path_of_shape[shape],
-            checkpoint_dir, device_t, batch_size)
+            checkpoint_dir, use_IN, device_t, batch_size, use_IN)
 
 def build_parser():
     parser = ArgumentParser()
@@ -175,6 +175,10 @@ def build_parser():
                         dest='allow_different_dimensions',
                         help='allow different image dimensions')
 
+    parser.add_argument('--IN', action='store_true',
+                        dest='IN',
+                        help='Use Instance Normalization instead of Batch-Instance Normalization.')
+
     return parser
 
 def check_opts(opts):
@@ -189,6 +193,11 @@ def main():
     opts = parser.parse_args()
     check_opts(opts)
 
+    if opts.IN:
+        use_IN = True
+    else:
+        use_IN = False
+
     if not os.path.isdir(opts.in_path): # in_path is a file
         if os.path.exists(opts.out_path) and os.path.isdir(opts.out_path):
             image_name = os.path.basename(opts.in_path)
@@ -202,16 +211,16 @@ def main():
         print(f"Output path is: {out_path}.")
         print(f"Checkpoint path is: {opts.checkpoint_dir}")
         print(f"Device doing the evaluation is: {opts.device}")
-        ffwd_to_img(opts.in_path, out_path, opts.checkpoint_dir, device=opts.device)
+        ffwd_to_img(opts.in_path, out_path, opts.checkpoint_dir, use_IN, device=opts.device)
     else: # in_path is a directory
         files = list_files(opts.in_path)
         full_in = [os.path.join(opts.in_path, x) for x in files]
         full_out = [os.path.join(opts.out_path, x) for x in files]
         if opts.allow_different_dimensions:
             ffwd_different_dimensions(full_in, full_out, opts.checkpoint_dir,
-                    device_t=opts.device, batch_size=opts.batch_size)
+                    use_IN, device_t=opts.device, batch_size=opts.batch_size)
         else :
-            ffwd(full_in, full_out, opts.checkpoint_dir, device_t=opts.device,
+            ffwd(full_in, full_out, opts.checkpoint_dir, use_IN, device_t=opts.device,
                     batch_size=opts.batch_size)
     print(f"Done. Please check the result in {out_path}.")
 if __name__ == '__main__':

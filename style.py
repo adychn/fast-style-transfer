@@ -85,6 +85,9 @@ def build_parser():
                         help='learning rate (default %(default)s)',
                         metavar='LEARNING_RATE', default=LEARNING_RATE)
 
+    parser.add_argument('--IN', action='store_true',
+                        dest='IN',
+                        help='Use Instance Normalization instead of Batch-Instance Normalization.')
     return parser
 
 def check_opts(opts):
@@ -124,6 +127,13 @@ def main():
     elif options.test:
         content_targets = [options.test]
 
+    if options.IN:
+        use_IN = True
+    else:
+        use_IN = False
+
+    print(f"Are we using Instance Normalization? {use_IN}.")
+
     kwargs = {
         "slow":options.slow,
         "epochs":options.epochs,
@@ -139,7 +149,8 @@ def main():
         options.content_weight,
         options.style_weight,
         options.tv_weight,
-        options.vgg_path
+        options.vgg_path,
+        use_IN
     ]
 
     if options.slow:

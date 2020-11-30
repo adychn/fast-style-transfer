@@ -16,7 +16,7 @@ DEVICES = 'CUDA_VISIBLE_DEVICES'
 
 # np arr, np arr
 def optimize(content_targets, style_target, content_weight, style_weight,
-             tv_weight, vgg_path, epochs=2, print_iterations=1000,
+             tv_weight, vgg_path, use_IN, epochs=2, print_iterations=1000,
              batch_size=4, save_path='checkpoints/fast_style_transfer.ckpt', slow=False,
              learning_rate=1e-3, debug=False):
     if slow:
@@ -70,7 +70,7 @@ def optimize(content_targets, style_target, content_weight, style_weight,
             )
             preds_pre = preds
         else:
-            preds = transform.net(X_content/255.0) # run through the style feed forward network. why need to normalize pixel to 0-1?
+            preds = transform.net(X_content/255.0, use_IN) # run through the style feed forward network. why need to normalize pixel to 0-1?
         net = vgg.net(vgg_path, vgg.preprocess(preds)) # run generated image through the pre-trained model
 
         # _tensor_size is a reduce function only count from [1:],
