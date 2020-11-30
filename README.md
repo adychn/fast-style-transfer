@@ -19,21 +19,28 @@ If you trained with Instance Normalzation, please name your checkpoint directory
 The below images are trained with 2 epochs and a batch size of 4. The no TV denoising one may improve image clarity with higher epochs, I suspect the training isn't enough to generate an equally good image as the denoising one.
 
 Style Image
+
 <img src = 'style/wave.jpg' width='350px'>
+
 Content Image
+
 <img src = 'content/COCO_train2014_000000000471.jpg' width='350px'>
+<img src = 'content/COCO_train2014_000000000722.jpg' width='350px'>
 
 Created with Instance Normalization.
 
 <img src = 'result/COCO_train2014_000000000471_wave_IN.jpg'>
+<img src = 'result/COCO_train2014_000000000722_wave_IN.jpg'>
 
 Created with Batch-Instance Normalization.
 
 <img src = 'result/COCO_train2014_000000000471_wave_NNresize_BIN.jpg'>
+<img src = 'result/COCO_train2014_000000000722_wave_NNresize_BIN.jpg'>
 
 Created with Batch-Instance Normalization without total denoising regularization.
 
 <img src = 'result/COCO_train2014_000000000471_wave_NNresize_BIN_noTVdenoising.jpg'>
+<img src = 'result/COCO_train2014_000000000722_wave_NNresize_BIN_noTVdenoising.jpg'>
 
 
 ## Fast Style Transfer in [TensorFlow](https://github.com/tensorflow/tensorflow)
