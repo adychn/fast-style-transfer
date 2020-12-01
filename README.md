@@ -16,24 +16,35 @@ Make sure to create a "result" directory first if there isn't one, this is where
 If you trained with Instance Normalzation, please name your checkpoint directory with "_IN" in the checkpoint folder name, it uses this property to add a --IN flag for doing Instance Normalization.
 
 ## Image Results
-The below images are trained with 2 epochs and a batch size of 4. The no TV denoising one may improve image clarity with higher epochs, I suspect the training isn't enough to generate an equally good image as the denoising one.
+The below images are trained with 2 epochs and a batch size of 4. The no TV denoising one may improve image clarity with higher epochs. I notice content image with too few pixels do not get a good result, such as the ones in COCO training dataset. And perhaps the training isn't enough to generate an equally good image as the denoising one, maybe increase epoch and use a larger batch size can help.
 
 Style Image
-<img src = 'style/wave.jpg' width='350px'>
+
+<img src = 'style/wave.jpg' width='700px'>
+
 Content Image
-<img src = 'content/COCO_train2014_000000000471.jpg' width='350px'>
+
+<img src = 'content/COCO_train2014_000000000471.jpg' width='700px'>
+<img src = 'content/COCO_train2014_000000000722.jpg' width='700px'>
+<img src = 'content/tesla3.jpeg' width='700px'>
 
 Created with Instance Normalization.
 
-<img src = 'result/COCO_train2014_000000000471_wave_IN.jpg'>
+<img src = 'result/COCO_train2014_000000000471_wave_IN.jpg' width='700px'>
+<img src = 'result/COCO_train2014_000000000722_wave_IN.jpg' width='700px'>
+<img src = 'result/tesla3_wave_IN.jpeg' width='700px'>
 
 Created with Batch-Instance Normalization.
 
-<img src = 'result/COCO_train2014_000000000471_wave_NNresize_BIN.jpg'>
+<img src = 'result/COCO_train2014_000000000471_wave_NNresize_BIN.jpg' width='700px'>
+<img src = 'result/COCO_train2014_000000000722_wave_NNresize_BIN.jpg' width='700px'>
+<img src = 'result/tesla3_wave_NNresize_BIN.jpeg' width='700px'> 
 
 Created with Batch-Instance Normalization without total denoising regularization.
 
-<img src = 'result/COCO_train2014_000000000471_wave_NNresize_BIN_noTVdenoising.jpg'>
+<img src = 'result/COCO_train2014_000000000471_wave_NNresize_BIN_noTVdenoising.jpg' width='700px'>
+<img src = 'result/COCO_train2014_000000000722_wave_NNresize_BIN_noTVdenoising.jpg' width='700px'>
+<img src = 'result/tesla3_wave_NNresize_BIN_noTVdenoising.jpeg' width='700px'> 
 
 
 ## Fast Style Transfer in [TensorFlow](https://github.com/tensorflow/tensorflow)
