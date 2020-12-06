@@ -2,7 +2,8 @@
 1. Add Batch-Instance Normalization capability. Batch-Instance Normalization on stylized images can improve object detection task on these images, for better detection of the pre-transformed objects. This is accomplished by adding and performing more batch norm versus instance norm at certain layers through learnable weights. The model can still use the default Instance Normalization only with --IN flag during training and inference. # Paper: Batch-Instance Normalization for Adaptively Style-Invariant Neural Networks.
 2. The feed forward netowrk uses nearest neighbor to up size the image, then do a same size conv2d op. Instead of doing a conv2d_transpose op. # Better Upsampling, https://distill.pub/2016/deconv-checkerboard/
 3. Remove the unnesssary total variation denoising regularization loss, due to #2 improvement. # Paper: A Learned Representation for Artistic Style.
-4. Clean up and add comments throughout the codes. The comments are useful for someone who wants to study and understand this code.
+4. Improve usability of command line arguments for style.py and evaluate.py.
+5. Clean up and add comments throughout the codes. The comments are useful for someone who wants to study and understand this code.
 
 It runs on Tensorflow 2.
 
@@ -22,47 +23,39 @@ Style Image
 
 <img src = 'style/wave.jpg' width='700px'>
 
-Content Image
-
+### Normalization, Instance vs Batch-Instance vs Batch-Instance without total denoising
 <img src = 'content/COCO_train2014_000000000471.jpg' width='700px'>
-<img src = 'content/COCO_train2014_000000000722.jpg' width='700px'>
-<img src = 'content/tesla3.jpeg' width='700px'>
-
-Created with Instance Normalization.
-
 <img src = 'result/COCO_train2014_000000000471_wave_IN.jpg' width='700px'>
+<img src = 'result/COCO_train2014_000000000471_wave_BIN.jpg' width='700px'>
+<img src = 'result/COCO_train2014_000000000471_wave_BIN_noTVdenoising.jpg' width='700px'>
+
+<img src = 'content/COCO_train2014_000000000722.jpg' width='700px'>
 <img src = 'result/COCO_train2014_000000000722_wave_IN.jpg' width='700px'>
+<img src = 'result/COCO_train2014_000000000722_wave_BIN.jpg' width='700px'>
+<img src = 'result/COCO_train2014_000000000722_wave_BIN_noTVdenoising.jpg' width='700px'>
+
+<img src = 'content/tesla3.jpeg' width='700px'>
 <img src = 'result/tesla3_wave_IN.jpeg' width='700px'>
-
-Created with Batch-Instance Normalization.
-
-<img src = 'result/COCO_train2014_000000000471_wave_NNresize_BIN.jpg' width='700px'>
-<img src = 'result/COCO_train2014_000000000722_wave_NNresize_BIN.jpg' width='700px'>
 <img src = 'result/tesla3_wave_NNresize_BIN.jpeg' width='700px'> 
-
-Created with Batch-Instance Normalization without total denoising regularization.
-
-<img src = 'result/COCO_train2014_000000000471_wave_NNresize_BIN_noTVdenoising.jpg' width='700px'>
-<img src = 'result/COCO_train2014_000000000722_wave_NNresize_BIN_noTVdenoising.jpg' width='700px'>
 <img src = 'result/tesla3_wave_NNresize_BIN_noTVdenoising.jpeg' width='700px'> 
 
 ## Doing Faster RCNN on Original vs Instance Normalized vs Batch-Instance Images
 COCO_train2014_000000000471
 
-<img src = 'result/FasterRCNN_result/COCO_train2014_000000000471_f.jpg'>
-<img src = 'result/FasterRCNN_result/COCO_train2014_000000000471_wave_IN_f.jpg'>
-<img src = 'result/FasterRCNN_result/COCO_train2014_000000000471_wave_BIN_f.jpg'>
+<img src = 'result/FasterRCNN_result/COCO_train2014_000000000471/COCO_train2014_000000000471_f.png'>
+<img src = 'result/FasterRCNN_result/COCO_train2014_000000000471/COCO_train2014_000000000471_wave_IN_f.png'>
+<img src = 'result/FasterRCNN_result/COCO_train2014_000000000471/COCO_train2014_000000000471_wave_BIN_f.png'>
 
 COCO_train2014_000000000722
 
-<img src = 'result/FasterRCNN_result/COCO_train2014_000000000722_f.jpg'>
-<img src = 'result/FasterRCNN_result/COCO_train2014_000000000722_wave_IN_f.jpg'>
-<img src = 'result/FasterRCNN_result/COCO_train2014_000000000722_wave_BIN_f.jpg'>
+<img src = 'result/FasterRCNN_result/COCO_train2014_000000000722/COCO_train2014_000000000722_f.png'>
+<img src = 'result/FasterRCNN_result/COCO_train2014_000000000722/COCO_train2014_000000000722_wave_IN_f.png'>
+<img src = 'result/FasterRCNN_result/COCO_train2014_000000000722/COCO_train2014_000000000722_wave_BIN_f.png'>
 
 COCO_train2014_000000001580
-<img src = 'result/FasterRCNN_result/COCO_train2014_000000001580_f.jpg'>
-<img src = 'result/FasterRCNN_result/COCO_train2014_000000001580_wave_IN_f.jpg'>
-<img src = 'result/FasterRCNN_result/COCO_train2014_000000001580_wave_BIN_f.jpg'>
+<img src = 'result/FasterRCNN_result/COCO_train2014_000000001580/COCO_train2014_000000001580_f.png'>
+<img src = 'result/FasterRCNN_result/COCO_train2014_000000001580/COCO_train2014_000000001580_wave_IN_f.png'>
+<img src = 'result/FasterRCNN_result/COCO_train2014_000000001580/COCO_train2014_000000001580_wave_BIN_f.png'>
 
 ## Some afterthoughts for generating a single feed forward netowork for many styles
 In our feed forward network, the _conv_tranpose_layer, after doing nearest neighbor upsize and proceed with convolution same size. The padding for convolution could try mirror padding as mentioned in the paper (A Learned Representation For Artistic Style) to generate a better image.
@@ -73,6 +66,7 @@ About training for many styles, “Since all weights in the transformer network 
 
 The discussion of this paper is very important, it opens many thoughts for future works.
 
+# Below are the original words from the main branch
 ## Fast Style Transfer in [TensorFlow](https://github.com/tensorflow/tensorflow)
 
 Add styles from famous paintings to any photo in a fraction of a second! [You can even style videos!](#video-stylization)
