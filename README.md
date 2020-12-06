@@ -1,5 +1,5 @@
 ## Changes on this Branch
-1. Add Batch-Instance Normalization capability. Can still use the default Instance Normalization with --IN flag during training and inference. # Paper: Batch-Instance Normalization for Adaptively Style-Invariant Neural Networks.
+1. Add Batch-Instance Normalization capability. Batch-Instance Normalization on stylized images can improve object detection task on these images, for better detection of the pre-transformed objects. This is accomplished by adding and performing more batch norm versus instance norm at certain layers through learnable weights. The model can still use the default Instance Normalization only with --IN flag during training and inference. # Paper: Batch-Instance Normalization for Adaptively Style-Invariant Neural Networks.
 2. The feed forward netowrk uses nearest neighbor to up size the image, then do a same size conv2d op. Instead of doing a conv2d_transpose op. # Better Upsampling, https://distill.pub/2016/deconv-checkerboard/
 3. Remove the unnesssary total variation denoising regularization loss, due to #2 improvement. # Paper: A Learned Representation for Artistic Style.
 4. Clean up and add comments throughout the codes. The comments are useful for someone who wants to study and understand this code.
@@ -15,7 +15,7 @@ Make sure to create a "result" directory first if there isn't one, this is where
 
 If you trained with Instance Normalzation, please name your checkpoint directory with "_IN" in the checkpoint folder name, it uses this property to add a --IN flag for doing Instance Normalization.
 
-## Image Results
+## Stylized Image Results
 The below images are trained with 2 epochs and a batch size of 4. The no TV denoising one may improve image clarity with higher epochs. I notice content image with too few pixels do not get a good result, such as the ones in COCO training dataset. And perhaps the training isn't enough to generate an equally good image as the denoising one, maybe increase epoch and use a larger batch size can help.
 
 Style Image
@@ -46,6 +46,32 @@ Created with Batch-Instance Normalization without total denoising regularization
 <img src = 'result/COCO_train2014_000000000722_wave_NNresize_BIN_noTVdenoising.jpg' width='700px'>
 <img src = 'result/tesla3_wave_NNresize_BIN_noTVdenoising.jpeg' width='700px'> 
 
+## Doing Faster RCNN on Original vs Instance Normalized vs Batch-Instance Images
+COCO_train2014_000000000471
+
+<img src = 'result/FasterRCNN_result/COCO_train2014_000000000471_f.jpg'>
+<img src = 'result/FasterRCNN_result/COCO_train2014_000000000471_wave_IN_f.jpg'>
+<img src = 'result/FasterRCNN_result/COCO_train2014_000000000471_wave_BIN_f.jpg'>
+
+COCO_train2014_000000000722
+
+<img src = 'result/FasterRCNN_result/COCO_train2014_000000000722_f.jpg'>
+<img src = 'result/FasterRCNN_result/COCO_train2014_000000000722_wave_IN_f.jpg'>
+<img src = 'result/FasterRCNN_result/COCO_train2014_000000000722_wave_BIN_f.jpg'>
+
+COCO_train2014_000000001580
+<img src = 'result/FasterRCNN_result/COCO_train2014_000000001580_f.jpg'>
+<img src = 'result/FasterRCNN_result/COCO_train2014_000000001580_wave_IN_f.jpg'>
+<img src = 'result/FasterRCNN_result/COCO_train2014_000000001580_wave_BIN_f.jpg'>
+
+## Some afterthoughts for generating a single feed forward netowork for many styles
+In our feed forward network, the _conv_tranpose_layer, after doing nearest neighbor upsize and proceed with convolution same size. The padding for convolution could try mirror padding as mentioned in the paper (A Learned Representation For Artistic Style) to generate a better image.
+
+Can try conditional instance normalization proposed in the paper (A Learned Representation For Artistic Style) that generate various styles in one feed forward network in the future, combine with Batch-Instance Normalization. In that scenario, we will have an additional "gate" parameter for each style with Batch-Instance Normalization.
+
+About training for many styles, “Since all weights in the transformer network are shared between styles, one way to incorporate a new style to a trained network is to keep the trained weights fixed and learn a new set of γ and β parameters.”
+
+The discussion of this paper is very important, it opens many thoughts for future works.
 
 ## Fast Style Transfer in [TensorFlow](https://github.com/tensorflow/tensorflow)
 
