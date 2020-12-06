@@ -64,7 +64,7 @@ Batch-Instance normalized images produce vastly higher confidence scores and acc
 <img src = 'result/FasterRCNN_result/COCO_train2014_000000001580/COCO_train2014_000000001580_wave_IN_f.png'>
 <img src = 'result/FasterRCNN_result/COCO_train2014_000000001580/COCO_train2014_000000001580_wave_BIN_f.png'>
 
-## Some afterthoughts for generating a single feed forward netowork for many styles
+## Some afterthoughts for generating a single feed forward network for many styles
 In our feed forward network, the _conv_tranpose_layer, after doing nearest neighbor upsize and proceed with convolution same size. The padding for convolution could try mirror padding as mentioned in the paper (A Learned Representation For Artistic Style) to generate a better image.
 
 Can try conditional instance normalization proposed in the paper (A Learned Representation For Artistic Style) that generate various styles in one feed forward network in the future, combine with Batch-Instance Normalization. In that scenario, we will have an additional "gate" parameter for each style with Batch-Instance Normalization.
