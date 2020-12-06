@@ -21,25 +21,25 @@ The below images are trained with 2 epochs and a batch size of 4. The no TV deno
 
 Style Image
 
-<img src = 'style/wave.jpg' width='700px'>
+<img src = 'style/wave.jpg'>
 
 ### Content Image vs Instance Norm vs Batch-Instance Norm vs Batch-Instance Norm w/o Total Denoising
 Batch-instance norm perform indistinguishably to instance norm in stylizing the content image.
 
-<img src = 'content/COCO_train2014_000000000471.jpg' width='700px'>
-<img src = 'result/COCO_train2014_000000000471_wave_IN.jpg' width='700px'>
-<img src = 'result/COCO_train2014_000000000471_wave_BIN.jpg' width='700px'>
-<img src = 'result/COCO_train2014_000000000471_wave_BIN_noTVdenoising.jpg' width='700px'>
+<img src = 'content/COCO_train2014_000000000471.jpg'>
+<img src = 'result/COCO_train2014_000000000471_wave_IN.jpg'>
+<img src = 'result/COCO_train2014_000000000471_wave_BIN.jpg'>
+<img src = 'result/COCO_train2014_000000000471_wave_BIN_noTVdenoising.jpg'>
 
-<img src = 'content/COCO_train2014_000000000722.jpg' width='700px'>
-<img src = 'result/COCO_train2014_000000000722_wave_IN.jpg' width='700px'>
-<img src = 'result/COCO_train2014_000000000722_wave_BIN.jpg' width='700px'>
-<img src = 'result/COCO_train2014_000000000722_wave_BIN_noTVdenoising.jpg' width='700px'>
+<img src = 'content/COCO_train2014_000000000722.jpg'>
+<img src = 'result/COCO_train2014_000000000722_wave_IN.jpg'>
+<img src = 'result/COCO_train2014_000000000722_wave_BIN.jpg'>
+<img src = 'result/COCO_train2014_000000000722_wave_BIN_noTVdenoising.jpg'>
 
-<img src = 'content/tesla3.jpeg' width='700px'>
-<img src = 'result/tesla3_wave_IN.jpeg' width='700px'>
-<img src = 'result/tesla3_wave_BIN.jpeg' width='700px'> 
-<img src = 'result/tesla3_wave_BIN_noTVdenoising.jpeg' width='700px'> 
+<img src = 'content/tesla3.jpeg'>
+<img src = 'result/tesla3_wave_IN.jpeg'>
+<img src = 'result/tesla3_wave_BIN.jpeg'> 
+<img src = 'result/tesla3_wave_BIN_noTVdenoising.jpeg'> 
 
 ## Doing Faster RCNN on Content Image vs Instance Norm vs Batch-Instance Norm
 ### About this Faster RCNN model
