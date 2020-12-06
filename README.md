@@ -23,7 +23,9 @@ Style Image
 
 <img src = 'style/wave.jpg' width='700px'>
 
-### Normalization, Instance vs Batch-Instance vs Batch-Instance without total denoising
+### Content Image vs Instance Norm vs Batch-Instance Norm vs Batch-Instance Norm w/o Total Denoising
+Batch-instance norm perform indistinguishably to instance norm in stylizing the content image.
+
 <img src = 'content/COCO_train2014_000000000471.jpg' width='700px'>
 <img src = 'result/COCO_train2014_000000000471_wave_IN.jpg' width='700px'>
 <img src = 'result/COCO_train2014_000000000471_wave_BIN.jpg' width='700px'>
@@ -36,10 +38,15 @@ Style Image
 
 <img src = 'content/tesla3.jpeg' width='700px'>
 <img src = 'result/tesla3_wave_IN.jpeg' width='700px'>
-<img src = 'result/tesla3_wave_NNresize_BIN.jpeg' width='700px'> 
-<img src = 'result/tesla3_wave_NNresize_BIN_noTVdenoising.jpeg' width='700px'> 
+<img src = 'result/tesla3_wave_BIN.jpeg' width='700px'> 
+<img src = 'result/tesla3_wave_BIN_noTVdenoising.jpeg' width='700px'> 
 
-## Doing Faster RCNN on Original vs Instance Normalized vs Batch-Instance Images
+## Doing Faster RCNN on Content Image vs Instance Norm vs Batch-Instance Norm
+### About this Faster RCNN model
+The Faster RCNN model I use here is taken from [tensorpack](https://github.com/tensorpack/tensorpack/tree/master/examples/FasterRCNN)(R101-FPN). It was trained on COCO train2017 images, and fine-turned from ImageNet pre-trained R101 model. Using ResNet-101 and FPN(Feature Pyramid Network) as its  backbone.
+
+Batch-Instance normalized images produce vastly higher confidence scores and accurate classification than Instance normalized ones. Instance normalized ones are almost unable to be recongized by Faster RCNN. However, Batch-Instance normalization still no where close to origial content image performance. I think it can be improved upon better training.
+
 COCO_train2014_000000000471
 
 <img src = 'result/FasterRCNN_result/COCO_train2014_000000000471/COCO_train2014_000000000471_f.png'>
