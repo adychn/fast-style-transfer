@@ -19,47 +19,47 @@ If you trained with Instance Normalzation, please name your checkpoint directory
 ## Stylized Image Results
 The below images are trained with 2 epochs and a batch size of 4. The no TV denoising one may improve image clarity with higher epochs. I notice content image with too few pixels do not get a good result, such as the ones in COCO training dataset. And perhaps the training isn't enough to generate an equally good image as the denoising one, maybe increase epoch and use a larger batch size can help.
 
-Style Image
-
+### Style Image
 <img src = 'style/wave.jpg'>
 
-### Content Image vs Instance Norm vs Batch-Instance Norm vs Batch-Instance Norm w/o Total Denoising
+### Content Image vs Instance Norm vs Batch-Instance Norm vs Batch-Instance Norm without total denoising
 Batch-instance norm perform indistinguishably to instance norm in stylizing the content image.
 
+#### COCO_train2014_000000000471.jpg
 <img src = 'content/COCO_train2014_000000000471.jpg'>
 <img src = 'result/COCO_train2014_000000000471_wave_IN.jpg'>
 <img src = 'result/COCO_train2014_000000000471_wave_BIN.jpg'>
 <img src = 'result/COCO_train2014_000000000471_wave_BIN_noTVdenoising.jpg'>
 
+#### COCO_train2014_000000000722.jpg
 <img src = 'content/COCO_train2014_000000000722.jpg'>
 <img src = 'result/COCO_train2014_000000000722_wave_IN.jpg'>
 <img src = 'result/COCO_train2014_000000000722_wave_BIN.jpg'>
 <img src = 'result/COCO_train2014_000000000722_wave_BIN_noTVdenoising.jpg'>
 
+#### tesla3.jpeg
 <img src = 'content/tesla3.jpeg'>
 <img src = 'result/tesla3_wave_IN.jpeg'>
 <img src = 'result/tesla3_wave_BIN.jpeg'> 
 <img src = 'result/tesla3_wave_BIN_noTVdenoising.jpeg'> 
 
-## Doing Faster RCNN on Content Image vs Instance Norm vs Batch-Instance Norm
+## Experiments with Faster RCNN on Content Image vs Instance Norm vs Batch-Instance Norm
 ### About this Faster RCNN model
 The Faster RCNN model I use here is taken from [tensorpack](https://github.com/tensorpack/tensorpack/tree/master/examples/FasterRCNN)(R101-FPN). It was trained on COCO train2017 images, and fine-turned from ImageNet pre-trained R101 model. Using ResNet-101 and FPN(Feature Pyramid Network) as its  backbone.
 
 Batch-Instance normalized images produce vastly higher confidence scores and accurate classification than Instance normalized ones. Instance normalized ones are almost unable to be recongized by Faster RCNN. However, Batch-Instance normalization still no where close to origial content image performance. I think it can be improved upon better training.
 
-COCO_train2014_000000000471
-
+#### COCO_train2014_000000000471.jpg
 <img src = 'result/FasterRCNN_result/COCO_train2014_000000000471/COCO_train2014_000000000471_f.png'>
 <img src = 'result/FasterRCNN_result/COCO_train2014_000000000471/COCO_train2014_000000000471_wave_IN_f.png'>
 <img src = 'result/FasterRCNN_result/COCO_train2014_000000000471/COCO_train2014_000000000471_wave_BIN_f.png'>
 
-COCO_train2014_000000000722
-
+#### COCO_train2014_000000000722.jpg
 <img src = 'result/FasterRCNN_result/COCO_train2014_000000000722/COCO_train2014_000000000722_f.png'>
 <img src = 'result/FasterRCNN_result/COCO_train2014_000000000722/COCO_train2014_000000000722_wave_IN_f.png'>
 <img src = 'result/FasterRCNN_result/COCO_train2014_000000000722/COCO_train2014_000000000722_wave_BIN_f.png'>
 
-COCO_train2014_000000001580
+#### COCO_train2014_000000001580.jpg
 <img src = 'result/FasterRCNN_result/COCO_train2014_000000001580/COCO_train2014_000000001580_f.png'>
 <img src = 'result/FasterRCNN_result/COCO_train2014_000000001580/COCO_train2014_000000001580_wave_IN_f.png'>
 <img src = 'result/FasterRCNN_result/COCO_train2014_000000001580/COCO_train2014_000000001580_wave_BIN_f.png'>
