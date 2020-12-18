@@ -2,7 +2,8 @@
 1. Add Batch-Instance Normalization capability. Batch-Instance Normalization on stylized images can improve object detection task on these images, for better detection of the pre-transformed objects. This is accomplished by adding and performing more batch norm versus instance norm at certain layers through learnable weights. The model can still use the default Instance Normalization only with --IN flag during training and inference. # Paper: Batch-Instance Normalization for Adaptively Style-Invariant Neural Networks.
 2. The feed forward netowrk uses nearest neighbor to up size the image, then do a same size conv2d op. Instead of doing a conv2d_transpose op. # Better Upsampling, https://distill.pub/2016/deconv-checkerboard/
 3. Remove the unnesssary total variation denoising regularization loss, due to #2 improvement. # Paper: A Learned Representation for Artistic Style.
-4. Clean up and add comments throughout the codes. The comments are useful for someone who wants to study and understand this code.
+4. Improve usability of command line arguments for style.py and evaluate.py.
+5. Clean up and add comments throughout the codes. The comments are useful for someone who wants to study and understand this code.
 
 It runs on Tensorflow 2.
 
@@ -18,53 +19,52 @@ If you trained with Instance Normalzation, please name your checkpoint directory
 ## Stylized Image Results
 The below images are trained with 2 epochs and a batch size of 4. The no TV denoising one may improve image clarity with higher epochs. I notice content image with too few pixels do not get a good result, such as the ones in COCO training dataset. And perhaps the training isn't enough to generate an equally good image as the denoising one, maybe increase epoch and use a larger batch size can help.
 
-Style Image
+### Style Image
+<img src = 'style/wave.jpg'>
 
-<img src = 'style/wave.jpg' width='700px'>
+### Content Image vs Instance Norm vs Batch-Instance Norm vs Batch-Instance Norm without total denoising
+Batch-instance norm perform indistinguishably to instance norm in stylizing the content image.
 
-Content Image
+#### COCO_train2014_000000000471.jpg
+<img src = 'content/COCO_train2014_000000000471.jpg'>
+<img src = 'result/COCO_train2014_000000000471_wave_IN.jpg'>
+<img src = 'result/COCO_train2014_000000000471_wave_BIN.jpg'>
+<img src = 'result/COCO_train2014_000000000471_wave_BIN_noTVdenoising.jpg'>
 
-<img src = 'content/COCO_train2014_000000000471.jpg' width='700px'>
-<img src = 'content/COCO_train2014_000000000722.jpg' width='700px'>
-<img src = 'content/tesla3.jpeg' width='700px'>
+#### COCO_train2014_000000000722.jpg
+<img src = 'content/COCO_train2014_000000000722.jpg'>
+<img src = 'result/COCO_train2014_000000000722_wave_IN.jpg'>
+<img src = 'result/COCO_train2014_000000000722_wave_BIN.jpg'>
+<img src = 'result/COCO_train2014_000000000722_wave_BIN_noTVdenoising.jpg'>
 
-Created with Instance Normalization.
+#### tesla3.jpeg
+<img src = 'content/tesla3.jpeg'>
+<img src = 'result/tesla3_wave_IN.jpeg'>
+<img src = 'result/tesla3_wave_BIN.jpeg'> 
+<img src = 'result/tesla3_wave_BIN_noTVdenoising.jpeg'> 
 
-<img src = 'result/COCO_train2014_000000000471_wave_IN.jpg' width='700px'>
-<img src = 'result/COCO_train2014_000000000722_wave_IN.jpg' width='700px'>
-<img src = 'result/tesla3_wave_IN.jpeg' width='700px'>
+## Experiments with Faster RCNN on Content Image vs Instance Norm vs Batch-Instance Norm
+### About this Faster RCNN model
+The Faster RCNN model I use here is taken from [tensorpack](https://github.com/tensorpack/tensorpack/tree/master/examples/FasterRCNN)(R101-FPN). It was trained on COCO train2017 images, and fine-turned from ImageNet pre-trained R101 model. Using ResNet-101 and FPN(Feature Pyramid Network) as its  backbone.
 
-Created with Batch-Instance Normalization.
+Batch-Instance normalized images produce vastly higher confidence scores and accurate classification than Instance normalized ones. Instance normalized ones are almost unable to be recongized by Faster RCNN. However, Batch-Instance normalization still no where close to origial content image performance. I think it can be improved upon better training.
 
-<img src = 'result/COCO_train2014_000000000471_wave_NNresize_BIN.jpg' width='700px'>
-<img src = 'result/COCO_train2014_000000000722_wave_NNresize_BIN.jpg' width='700px'>
-<img src = 'result/tesla3_wave_NNresize_BIN.jpeg' width='700px'> 
+#### COCO_train2014_000000000471.jpg
+<img src = 'result/FasterRCNN_result/COCO_train2014_000000000471/COCO_train2014_000000000471_f.png'>
+<img src = 'result/FasterRCNN_result/COCO_train2014_000000000471/COCO_train2014_000000000471_wave_IN_f.png'>
+<img src = 'result/FasterRCNN_result/COCO_train2014_000000000471/COCO_train2014_000000000471_wave_BIN_f.png'>
 
-Created with Batch-Instance Normalization without total denoising regularization.
+#### COCO_train2014_000000000722.jpg
+<img src = 'result/FasterRCNN_result/COCO_train2014_000000000722/COCO_train2014_000000000722_f.png'>
+<img src = 'result/FasterRCNN_result/COCO_train2014_000000000722/COCO_train2014_000000000722_wave_IN_f.png'>
+<img src = 'result/FasterRCNN_result/COCO_train2014_000000000722/COCO_train2014_000000000722_wave_BIN_f.png'>
 
-<img src = 'result/COCO_train2014_000000000471_wave_NNresize_BIN_noTVdenoising.jpg' width='700px'>
-<img src = 'result/COCO_train2014_000000000722_wave_NNresize_BIN_noTVdenoising.jpg' width='700px'>
-<img src = 'result/tesla3_wave_NNresize_BIN_noTVdenoising.jpeg' width='700px'> 
+#### COCO_train2014_000000001580.jpg
+<img src = 'result/FasterRCNN_result/COCO_train2014_000000001580/COCO_train2014_000000001580_f.png'>
+<img src = 'result/FasterRCNN_result/COCO_train2014_000000001580/COCO_train2014_000000001580_wave_IN_f.png'>
+<img src = 'result/FasterRCNN_result/COCO_train2014_000000001580/COCO_train2014_000000001580_wave_BIN_f.png'>
 
-## Doing Faster RCNN on Original vs Instance Normalized vs Batch-Instance Images
-COCO_train2014_000000000471
-
-<img src = 'result/FasterRCNN_result/COCO_train2014_000000000471_f.jpg'>
-<img src = 'result/FasterRCNN_result/COCO_train2014_000000000471_wave_IN_f.jpg'>
-<img src = 'result/FasterRCNN_result/COCO_train2014_000000000471_wave_BIN_f.jpg'>
-
-COCO_train2014_000000000722
-
-<img src = 'result/FasterRCNN_result/COCO_train2014_000000000722_f.jpg'>
-<img src = 'result/FasterRCNN_result/COCO_train2014_000000000722_wave_IN_f.jpg'>
-<img src = 'result/FasterRCNN_result/COCO_train2014_000000000722_wave_BIN_f.jpg'>
-
-COCO_train2014_000000001580
-<img src = 'result/FasterRCNN_result/COCO_train2014_000000001580_f.jpg'>
-<img src = 'result/FasterRCNN_result/COCO_train2014_000000001580_wave_IN_f.jpg'>
-<img src = 'result/FasterRCNN_result/COCO_train2014_000000001580_wave_BIN_f.jpg'>
-
-## Some afterthoughts for generating a single feed forward netowork for many styles
+## Some afterthoughts for generating a single feed forward network for many styles
 In our feed forward network, the _conv_tranpose_layer, after doing nearest neighbor upsize and proceed with convolution same size. The padding for convolution could try mirror padding as mentioned in the paper (A Learned Representation For Artistic Style) to generate a better image.
 
 Can try conditional instance normalization proposed in the paper (A Learned Representation For Artistic Style) that generate various styles in one feed forward network in the future, combine with Batch-Instance Normalization. In that scenario, we will have an additional "gate" parameter for each style with Batch-Instance Normalization.
@@ -73,6 +73,7 @@ About training for many styles, “Since all weights in the transformer network 
 
 The discussion of this paper is very important, it opens many thoughts for future works.
 
+# Below are the original words from the main branch
 ## Fast Style Transfer in [TensorFlow](https://github.com/tensorflow/tensorflow)
 
 Add styles from famous paintings to any photo in a fraction of a second! [You can even style videos!](#video-stylization)
