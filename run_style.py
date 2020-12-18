@@ -16,7 +16,7 @@ for i, argv in enumerate(sys.argv):
 	file_name = picture_in_basename.split('.')[0]
 	file_extension = picture_in_basename.split('.')[1]
 
-	checkpoints = ["wave_IN", "wave_NNresize_BIN", "wave_NNresize_BIN_noTVdenoising"]
+	checkpoints = ["wave_IN", "wave_BIN"]
 
 	for checkpoint in checkpoints:
 		picture_out = os.path.join("result", file_name + "_" + checkpoint + "." + file_extension)

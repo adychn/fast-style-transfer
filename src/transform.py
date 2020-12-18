@@ -51,7 +51,7 @@ def _conv_tranpose_layer(net, out_channels, use_IN, filter_size, strides, debug=
     # paddings = tf.constant([[0, 0], [x, x], [x, x], [0, 0]])
     # net = tf.pad(net, paddings, "REFLECT")
     filters_init = _conv_init_vars(net, out_channels, filter_size)
-    net = tf.nn.conv2d(net, filters=filters_init, strides=1, padding='SAME')
+    net = tf.nn.conv2d(net, filters=filters_init, strides=1, padding='SAME') # padding with REFLECT could be better
 
     # previously
     # strides_shape = [1, strides, strides, 1]
