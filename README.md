@@ -102,18 +102,25 @@ The discussion of this paper is very important, it opens many thoughts for futur
 # References
 ## Style Transfer
 Leon A Gatys, Alexander S Ecker, and Matthias Bethge. Image style transfer using convolutional neural networks. In CVPR, 2016.
+
 Justin Johnson, Alexandre Alahi, and Li Fei-Fei. Perceptual losses for real-time style transfer and super-resolution. In ECCV, 2016.
+
 Better Upsampling, https://distill.pub/2016/deconv-checkerboard/
+
 Dumoulin, V., Shlens, J., & Kudlur, M. (2017). A Learned Representation For Artistic Style. ArXiv, abs/1610.07629.
 
 ## Normalization
 Sergey Ioffe and Christian Szegedy. Batch normalization: Accelerating deep network training by reducing internal covariate shift. In ICML, 2015.
+
 Jimmy Lei Ba, Jamie Ryan Kiros, and Geoffrey E Hinton. Layer normalization. arXiv preprint arXiv:1607.06450, 2016.
+
 DmitryUlyanov,AndreaVedaldi,andVictorS.Lempitsky.Instance normalization:Themissingingredient for fast stylization. arXiv preprint arXiv:1607.08022, 2016.
+
 Yuxin Wu and Kaiming He. Group normalization. arXiv preprint arXiv:1803.08494, 2018.
 
 ## Faster RCNN
 Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Jian Sun. Deep residual learning for image recognition. In CVPR, 2016.
+
 Lin, T., Dollár, P., Girshick, R.B., He, K., Hariharan, B., & Belongie, S.J. (2017). Feature Pyramid Networks for Object Detection. 2017 IEEE Conference on Computer Vision and Pattern Recognition (CVPR), 936-944.
 
 ## Multitask Cascaded Convolutional Networks (MTCNN)
