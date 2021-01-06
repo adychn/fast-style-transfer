@@ -18,10 +18,10 @@ Output images will be named as input images plus the checkpoint name, and will b
 
 If your model was trained with Instance Normalzation, name your checkpoint directory with "_IN" in the checkpoint folder name, the script uses this property to add a --IN flag for doing loading the Instance Normalization model to fit your checkpoint.
 
-# Results
+## Results
 The below images are trained with 2 epochs and a batch size of 4. The no TV denoising one may improve image clarity with higher epochs. I notice content image with too few pixels do not get a good result, such as the ones in COCO training dataset. And perhaps the training isn't enough to generate an equally good image as the denoising one, maybe increase epoch and use a larger batch size can help.
 
-## Style Image
+### Style Image
 <img src = 'style/wave.jpg'>
 
 The below samples compare each image with its normalization counterparts. To be specific, an original content image is compared with one that does Instance Norm, one that does Batch-Instance Norm, and one that does Batch-Instance Norm without total variational denoising.
@@ -30,90 +30,89 @@ From stylizing stand point, Batch-Instance norm performed indistinguishably to i
 
 However, without total variational denoising, the pictures look grainier.  I suspect it is due to my under-trained feed forward network.
 
-## Stylized Images
-### Content Image
+#### Content Image
 <img src = 'content/COCO_train2014_000000000471.jpg'>
-### With Instance Norm
+#### With Instance Norm
 <img src = 'result/COCO_train2014_000000000471_wave_IN.jpg'>
-### With Batch-Instance Norm
+#### With Batch-Instance Norm
 <img src = 'result/COCO_train2014_000000000471_wave_BIN.jpg'>
-### With Batch-Instance Norm no total variational denoising
+#### With Batch-Instance Norm no total variational denoising
 <img src = 'result/COCO_train2014_000000000471_wave_BIN_noTVdenoising.jpg'>
 
-### Content Image
+#### Content Image
 <img src = 'content/COCO_train2014_000000000722.jpg'>
-### With Instance Norm
+#### With Instance Norm
 <img src = 'result/COCO_train2014_000000000722_wave_IN.jpg'>
-### With Batch-Instance Norm
+#### With Batch-Instance Norm
 <img src = 'result/COCO_train2014_000000000722_wave_BIN.jpg'>
-### With Batch-Instance Norm no total variational denoising
+#### With Batch-Instance Norm no total variational denoising
 <img src = 'result/COCO_train2014_000000000722_wave_BIN_noTVdenoising.jpg'>
 
-### Content Image
+#### Content Image
 <img src = 'content/tesla3.jpeg'>
-### After Instance Norm
+#### After Instance Norm
 <img src = 'result/tesla3_wave_IN.jpeg'>
-### After Batch-Instance Norm
+#### After Batch-Instance Norm
 <img src = 'result/tesla3_wave_BIN.jpeg'> 
-### After Batch-Instance Norm no total variational denoising
+#### After Batch-Instance Norm no total variational denoising
 <img src = 'result/tesla3_wave_BIN_noTVdenoising.jpeg'> 
 
-# Experiment Stylized Image with Object Detection Models
-## Faster RCNN Model
+## Experiment Stylized Image with Object Detection Models
+### Faster RCNN Model
 This Faster RCNN model I use here is taken from [tensorpack](https://github.com/tensorpack/tensorpack/tree/master/examples/FasterRCNN)(R101-FPN). It was trained on COCO train2017 image dataset, and fine-turned from ImageNet pre-trained R101 model, more details can be read in the above link. It uses ResNet-101 and FPN(Feature Pyramid Network) as its backbone.
 
 The purpose of running this model on stylized images is to analyze how much of an improvement Batch-Instance Norm, can help detect objects in a stylized image. The number belongs with each detection bounding box is the confidence score on its detection. As we can see from the images below, Batch-Instance normalized images produce vastly higher confidence scores, and more accurate classification than Instance normalized ones. Instance normalized ones are almost unrecongizable by Faster RCNN. However, Batch-Instance normalization is still far from to origial content image performance. I think it can be improved upon with more epoch training and parameter fine-tuning on the stylized feed forward net with Batch-Instance Norm. The below results were produced with no fine turning, and just kept the parameters the same between instance Norm model and batch-instance norm model.
 
-### Content Image
+#### Content Image
 <img src = 'result/FasterRCNN_result/COCO_train2014_000000000471/COCO_train2014_000000000471_f.png'>
-### With Instance Norm
+#### With Instance Norm
 <img src = 'result/FasterRCNN_result/COCO_train2014_000000000471/COCO_train2014_000000000471_wave_IN_f.png'>
-### With Batch-Instance Norm no total variational denoising
+#### With Batch-Instance Norm no total variational denoising
 <img src = 'result/FasterRCNN_result/COCO_train2014_000000000471/COCO_train2014_000000000471_wave_BIN_f.png'>
 
-### Content Image
+#### Content Image
 <img src = 'result/FasterRCNN_result/COCO_train2014_000000000722/COCO_train2014_000000000722_f.png'>
-### With Instance Norm
+#### With Instance Norm
 <img src = 'result/FasterRCNN_result/COCO_train2014_000000000722/COCO_train2014_000000000722_wave_IN_f.png'>
-### With Batch-Instance Norm no total variational denoising
+#### With Batch-Instance Norm no total variational denoising
 <img src = 'result/FasterRCNN_result/COCO_train2014_000000000722/COCO_train2014_000000000722_wave_BIN_f.png'>
 
-### Content Image
+#### Content Image
 <img src = 'result/FasterRCNN_result/COCO_train2014_000000001580/COCO_train2014_000000001580_f.png'>
-### After Instance Norm
+#### After Instance Norm
 <img src = 'result/FasterRCNN_result/COCO_train2014_000000001580/COCO_train2014_000000001580_wave_IN_f.png'>
-### After Batch-Instance Norm no total variational denoising
+#### After Batch-Instance Norm no total variational denoising
 <img src = 'result/FasterRCNN_result/COCO_train2014_000000001580/COCO_train2014_000000001580_wave_BIN_f.png'>
 
-## MTCNN Model
+### MTCNN Model
 This MTCNN model is obtained from Python Package Index (PyPI) (https://pypi.org/project/mtcnn/). The model is adapted from the Facenet’s MTCNN implementation. It detects human faces and labels five features of each detected face (two for eyes, one for nose, two for month).
 
 The purpose of this experiment is to find out how well finer resolution image objects can be detected. And human face particularly is usually the most interesting subject of a photo, and each face is usually comparably small, occupying less pixels than many well-define objects, such as a car, a cat, or a dog. So I figure it will be interesting to do this finer, more focused detection task compared to the FasterRCNN. The reason I say more focus is because of MTCNN's three cascaded network detection on one usually small patch of an image.
 
 MTCNN on stylized images see a significant degradation compared to original images. And between different stylized normalizations, there is no observable difference or improvement. I suspect it may due to MTCNN detection sensitivity that eliminates many true postives, and favors only the higher confidence information.
 
-### Content Image
+#### Content Image
 <img src = 'result/MTCNN_result/mtcnn_warriors.jpg'>
-### With Instance Norm
+#### With Instance Norm
 <img src = 'result/MTCNN_result/mtcnn_warriors_wave_IN.jpg'>
-### With Batch-Instance Norm no total variational denoising
+#### With Batch-Instance Norm no total variational denoising
 <img src = 'result/MTCNN_result/mtcnn_warriors_wave_BIN.jpg'>
 
-### Content Image
+#### Content Image
 <img src = 'result/MTCNN_result/mtcnn_nba.jpg'>
-### With Instance Norm
+#### With Instance Norm
 <img src = 'result/MTCNN_result/mtcnn_nba_wave_IN.jpg'>
-### With Batch-Instance Norm no total variational denoising
+#### With Batch-Instance Norm no total variational denoising
 <img src = 'result/MTCNN_result/mtcnn_nba_wave_BIN.jpg'>
 
-### Content Image
+#### Content Image
 <img src = 'result/MTCNN_result/mtcnn_Bipolar-Diversity.jpg'>
-### With Instance Norm
+#### With Instance Norm
 <img src = 'result/MTCNN_result/mtcnn_Bipolar-Diversity_wave_IN.jpg'>
-### With Batch-Instance Norm no total variational denoising
+#### With Batch-Instance Norm no total variational denoising
 <img src = 'result/MTCNN_result/mtcnn_Bipolar-Diversity_wave_BIN.jpg'>
 
-# Thoughts on generating a single feed forward network for many styles
+## Thoughts on generating a single feed forward network for many styles
 Since this work is a single feed forward network for a style, I thought I will share my opinions on a netowrk for multiple styles, particularly from reading the paper "A Learned Representation For Artistic Style" by Google.
 
 In our feed forward network, the conv_tranpose_layer, by doing nearest neighbor upsize and proceed with convolution SAME size padding. The padding for convolution is default to zero padding, but we could try the mirror padding mentioned in the paper to see if it generates a better image.
@@ -124,8 +123,8 @@ About training for many styles, the paper described “Since all weights in the 
 
 The discussion of this paper is very important, it opens many thoughts for future works.
 
-# References
-## Style Transfer
+## References
+### Style Transfer
 Leon A Gatys, Alexander S Ecker, and Matthias Bethge. Image style transfer using convolutional neural networks. In CVPR, 2016.
 
 Justin Johnson, Alexandre Alahi, and Li Fei-Fei. Perceptual losses for real-time style transfer and super-resolution. In ECCV, 2016.
@@ -134,7 +133,7 @@ Better Upsampling, https://distill.pub/2016/deconv-checkerboard/
 
 Dumoulin, V., Shlens, J., & Kudlur, M. (2017). A Learned Representation For Artistic Style. ArXiv, abs/1610.07629.
 
-## Normalization
+### Normalization
 Sergey Ioffe and Christian Szegedy. Batch normalization: Accelerating deep network training by reducing internal covariate shift. In ICML, 2015.
 
 Jimmy Lei Ba, Jamie Ryan Kiros, and Geoffrey E Hinton. Layer normalization. arXiv preprint arXiv:1607.06450, 2016.
@@ -143,14 +142,14 @@ DmitryUlyanov,AndreaVedaldi,andVictorS.Lempitsky.Instance normalization:Themissi
 
 Yuxin Wu and Kaiming He. Group normalization. arXiv preprint arXiv:1803.08494, 2018.
 
-## Faster RCNN
+### Faster RCNN
 Ren, S., He, K., Girshick, R., & Sun, J. (2016). Faster r-cnn: Towards real-time object detection with region proposal networks. IEEE transactions on pattern analysis and machine intelligence, 39(6), 1137-1149.
 
 Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Jian Sun. Deep residual learning for image recognition. In CVPR, 2016.
 
 Lin, T., Dollár, P., Girshick, R.B., He, K., Hariharan, B., & Belongie, S.J. (2017). Feature Pyramid Networks for Object Detection. 2017 IEEE Conference on Computer Vision and Pattern Recognition (CVPR), 936-944.
 
-## Multitask Cascaded Convolutional Networks (MTCNN)
+### Multitask Cascaded Convolutional Networks (MTCNN)
 Zhang, K., Zhang, Z., Li, Z., & Qiao, Y. (2016). Joint Face Detection and Alignment Using Multitask Cascaded Convolutional Networks. IEEE Signal Processing Letters, 23, 1499-1503.
 
 
