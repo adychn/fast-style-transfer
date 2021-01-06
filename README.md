@@ -18,7 +18,7 @@ Output images will be named as input images plus the checkpoint name, and will b
 
 If your model was trained with Instance Normalzation, name your checkpoint directory with "_IN" in the checkpoint folder name, the script uses this property to add a --IN flag for doing loading the Instance Normalization model to fit your checkpoint.
 
-# Stylized Image Results
+# Results
 The below images are trained with 2 epochs and a batch size of 4. The no TV denoising one may improve image clarity with higher epochs. I notice content image with too few pixels do not get a good result, such as the ones in COCO training dataset. And perhaps the training isn't enough to generate an equally good image as the denoising one, maybe increase epoch and use a larger batch size can help.
 
 ## Style Image
@@ -30,34 +30,32 @@ From stylizing stand point, Batch-Instance norm performed indistinguishably to i
 
 However, without total variational denoising, the pictures look grainier.  I suspect it is due to my under-trained feed forward network.
 
-### COCO_train2014_000000000471.jpg
-#### Content Image
+## Stylized Images
+### Content Image
 <img src = 'content/COCO_train2014_000000000471.jpg'>
-#### With Instance Norm
+### With Instance Norm
 <img src = 'result/COCO_train2014_000000000471_wave_IN.jpg'>
-#### With Batch-Instance Norm
+### With Batch-Instance Norm
 <img src = 'result/COCO_train2014_000000000471_wave_BIN.jpg'>
-#### With Batch-Instance Norm no total variational denoising
+### With Batch-Instance Norm no total variational denoising
 <img src = 'result/COCO_train2014_000000000471_wave_BIN_noTVdenoising.jpg'>
 
-### COCO_train2014_000000000722.jpg
-#### Content Image
+### Content Image
 <img src = 'content/COCO_train2014_000000000722.jpg'>
-#### With Instance Norm
+### With Instance Norm
 <img src = 'result/COCO_train2014_000000000722_wave_IN.jpg'>
-#### With Batch-Instance Norm
+### With Batch-Instance Norm
 <img src = 'result/COCO_train2014_000000000722_wave_BIN.jpg'>
-#### With Batch-Instance Norm no total variational denoising
+### With Batch-Instance Norm no total variational denoising
 <img src = 'result/COCO_train2014_000000000722_wave_BIN_noTVdenoising.jpg'>
 
-### tesla3.jpeg
-#### Content Image
+### Content Image
 <img src = 'content/tesla3.jpeg'>
-#### After Instance Norm
+### After Instance Norm
 <img src = 'result/tesla3_wave_IN.jpeg'>
-#### After Batch-Instance Norm
+### After Batch-Instance Norm
 <img src = 'result/tesla3_wave_BIN.jpeg'> 
-#### After Batch-Instance Norm no total variational denoising
+### After Batch-Instance Norm no total variational denoising
 <img src = 'result/tesla3_wave_BIN_noTVdenoising.jpeg'> 
 
 # Experiment Stylized Image with Object Detection Models
@@ -66,28 +64,25 @@ This Faster RCNN model I use here is taken from [tensorpack](https://github.com/
 
 The purpose of running this model on stylized images is to analyze how much of an improvement Batch-Instance Norm, can help detect objects in a stylized image. The number belongs with each detection bounding box is the confidence score on its detection. As we can see from the images below, Batch-Instance normalized images produce vastly higher confidence scores, and more accurate classification than Instance normalized ones. Instance normalized ones are almost unrecongizable by Faster RCNN. However, Batch-Instance normalization is still far from to origial content image performance. I think it can be improved upon with more epoch training and parameter fine-tuning on the stylized feed forward net with Batch-Instance Norm. The below results were produced with no fine turning, and just kept the parameters the same between instance Norm model and batch-instance norm model.
 
-### COCO_train2014_000000000471.jpg
-#### Content Image
+### Content Image
 <img src = 'result/FasterRCNN_result/COCO_train2014_000000000471/COCO_train2014_000000000471_f.png'>
-#### With Instance Norm
+### With Instance Norm
 <img src = 'result/FasterRCNN_result/COCO_train2014_000000000471/COCO_train2014_000000000471_wave_IN_f.png'>
-#### With Batch-Instance Norm no total variational denoising
+### With Batch-Instance Norm no total variational denoising
 <img src = 'result/FasterRCNN_result/COCO_train2014_000000000471/COCO_train2014_000000000471_wave_BIN_f.png'>
 
-### COCO_train2014_000000000722.jpg
-#### Content Image
+### Content Image
 <img src = 'result/FasterRCNN_result/COCO_train2014_000000000722/COCO_train2014_000000000722_f.png'>
-#### With Instance Norm
+### With Instance Norm
 <img src = 'result/FasterRCNN_result/COCO_train2014_000000000722/COCO_train2014_000000000722_wave_IN_f.png'>
-#### With Batch-Instance Norm no total variational denoising
+### With Batch-Instance Norm no total variational denoising
 <img src = 'result/FasterRCNN_result/COCO_train2014_000000000722/COCO_train2014_000000000722_wave_BIN_f.png'>
 
-### COCO_train2014_000000001580.jpg
-#### Content Image
+### Content Image
 <img src = 'result/FasterRCNN_result/COCO_train2014_000000001580/COCO_train2014_000000001580_f.png'>
-#### After Instance Norm
+### After Instance Norm
 <img src = 'result/FasterRCNN_result/COCO_train2014_000000001580/COCO_train2014_000000001580_wave_IN_f.png'>
-#### After Batch-Instance Norm no total variational denoising
+### After Batch-Instance Norm no total variational denoising
 <img src = 'result/FasterRCNN_result/COCO_train2014_000000001580/COCO_train2014_000000001580_wave_BIN_f.png'>
 
 ## MTCNN Model
@@ -97,28 +92,25 @@ The purpose of this experiment is to find out how well finer resolution image ob
 
 MTCNN on stylized images see a significant degradation compared to original images. And between different stylized normalizations, there is no observable difference or improvement. I suspect it may due to MTCNN detection sensitivity that eliminates many true postives, and favors only the higher confidence information.
 
-### mtcnn_warriors.jpg
-#### Content Image
+### Content Image
 <img src = 'result/MTCNN_result/mtcnn_warriors.jpg'>
-#### With Instance Norm
+### With Instance Norm
 <img src = 'result/MTCNN_result/mtcnn_warriors_wave_IN.jpg'>
-#### With Batch-Instance Norm no total variational denoising
+### With Batch-Instance Norm no total variational denoising
 <img src = 'result/MTCNN_result/mtcnn_warriors_wave_BIN.jpg'>
 
-### mtcnn_nba.jpg
-#### Content Image
+### Content Image
 <img src = 'result/MTCNN_result/mtcnn_nba.jpg'>
-#### With Instance Norm
+### With Instance Norm
 <img src = 'result/MTCNN_result/mtcnn_nba_wave_IN.jpg'>
-#### With Batch-Instance Norm no total variational denoising
+### With Batch-Instance Norm no total variational denoising
 <img src = 'result/MTCNN_result/mtcnn_nba_wave_BIN.jpg'>
 
-### mtcnn_Bipolar-Diversity.jpg
-#### Content Image
+### Content Image
 <img src = 'result/MTCNN_result/mtcnn_Bipolar-Diversity.jpg'>
-#### With Instance Norm
+### With Instance Norm
 <img src = 'result/MTCNN_result/mtcnn_Bipolar-Diversity_wave_IN.jpg'>
-#### With Batch-Instance Norm no total variational denoising
+### With Batch-Instance Norm no total variational denoising
 <img src = 'result/MTCNN_result/mtcnn_Bipolar-Diversity_wave_BIN.jpg'>
 
 # Thoughts on generating a single feed forward network for many styles
