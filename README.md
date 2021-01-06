@@ -95,41 +95,43 @@ This MTCNN model is obtained from Python Package Index (PyPI) (https://pypi.org/
 
 The purpose of this experiment is to find out how well finer resolution image objects can be detected. And human face particularly is usually the most interesting subject of a photo, and each face is usually comparably small, occupying less pixels than many well-define objects, such as a car, a cat, or a dog. So I figure it will be interesting to do this finer, more focused detection task compared to the FasterRCNN. The reason I say more focus is because of MTCNN's three cascaded network detection on one usually small patch of an image.
 
-#### COCO_train2014_000000000471.jpg
+#### mtcnn_warriors.jpg
 ##### Content Image
-<img src = 'result/FasterRCNN_result/COCO_train2014_000000000471/COCO_train2014_000000000471_f.png'>
+<img src = 'result/MTCNN_result/mtcnn_warriors.jpg'>
 ##### With Instance Norm
-<img src = 'result/FasterRCNN_result/COCO_train2014_000000000471/COCO_train2014_000000000471_wave_IN_f.png'>
+<img src = 'result/MTCNN_result/mtcnn_warriors_wave_IN.jpg'>
 ##### With Batch-Instance Norm no total variational denoising
-<img src = 'result/FasterRCNN_result/COCO_train2014_000000000471/COCO_train2014_000000000471_wave_BIN_f.png'>
+<img src = 'result/MTCNN_result/mtcnn_warriors_wave_BIN.jpg'>
 
-#### COCO_train2014_000000000722.jpg
+#### mtcnn_nba.jpg
 ##### Content Image
-<img src = 'result/FasterRCNN_result/COCO_train2014_000000000722/COCO_train2014_000000000722_f.png'>
+<img src = 'result/MTCNN_result/mtcnn_nba.jpg'>
 ##### With Instance Norm
-<img src = 'result/FasterRCNN_result/COCO_train2014_000000000722/COCO_train2014_000000000722_wave_IN_f.png'>
+<img src = 'result/MTCNN_result/mtcnn_nba_wave_IN.jpg'>
 ##### With Batch-Instance Norm no total variational denoising
-<img src = 'result/FasterRCNN_result/COCO_train2014_000000000722/COCO_train2014_000000000722_wave_BIN_f.png'>
+<img src = 'result/MTCNN_result/mtcnn_nba_wave_BIN.jpg'>
 
-#### COCO_train2014_000000001580.jpg
+#### mtcnn_Bipolar-Diversity.jpg
 ##### Content Image
-<img src = 'result/FasterRCNN_result/COCO_train2014_000000001580/COCO_train2014_000000001580_f.png'>
-##### After Instance Norm
-<img src = 'result/FasterRCNN_result/COCO_train2014_000000001580/COCO_train2014_000000001580_wave_IN_f.png'>
-##### After Batch-Instance Norm no total variational denoising
-<img src = 'result/FasterRCNN_result/COCO_train2014_000000001580/COCO_train2014_000000001580_wave_BIN_f.png'>
+<img src = 'result/MTCNN_result/mtcnn_Bipolar-Diversity.jpg'>
+##### With Instance Norm
+<img src = 'result/MTCNN_result/mtcnn_Bipolar-Diversity_wave_IN.jpg'>
+##### With Batch-Instance Norm no total variational denoising
+<img src = 'result/MTCNN_result/mtcnn_Bipolar-Diversity_wave_BIN.jpg'>
 
-## Some afterthoughts for generating a single feed forward network for many styles
-In our feed forward network, the _conv_tranpose_layer, after doing nearest neighbor upsize and proceed with convolution same size. The padding for convolution could try mirror padding as mentioned in the paper (A Learned Representation For Artistic Style) to generate a better image.
+## Thoughts on generating a single feed forward network for many styles
+Since this work is a single feed forward network for a style, I thought I will share my opinions on a netowrk for multiple styles, particularly from reading the paper "A Learned Representation For Artistic Style" by Google.
 
-Can try conditional instance normalization proposed in the paper (A Learned Representation For Artistic Style) that generate various styles in one feed forward network in the future, combine with Batch-Instance Normalization. In that scenario, we will have an additional "gate" parameter for each style with Batch-Instance Normalization.
+In our feed forward network, the conv_tranpose_layer, by doing nearest neighbor upsize and proceed with convolution SAME size padding. The padding for convolution is default to zero padding, but we could try the mirror padding mentioned in the paper to see if it generates a better image.
 
-About training for many styles, “Since all weights in the transformer network are shared between styles, one way to incorporate a new style to a trained network is to keep the trained weights fixed and learn a new set of γ and β parameters.”
+Also we can try merging batch-instance normalization and conditional instance normalization proposed by the paper. The conditional instance normalization is the key element to control various styles in one feed forward network.
+
+About training for many styles, the paper described “Since all weights in the transformer network are shared between styles, one way to incorporate a new style to a trained network is to keep the trained weights fixed and learn a new set of γ and β parameters.” Basically it says all styles can be explained by the same weights in the feed forward network, generating different style is simply an affine transformation on existing weights.
 
 The discussion of this paper is very important, it opens many thoughts for future works.
 
-# References
-## Style Transfer
+## References
+### Style Transfer
 Leon A Gatys, Alexander S Ecker, and Matthias Bethge. Image style transfer using convolutional neural networks. In CVPR, 2016.
 
 Justin Johnson, Alexandre Alahi, and Li Fei-Fei. Perceptual losses for real-time style transfer and super-resolution. In ECCV, 2016.
@@ -138,7 +140,7 @@ Better Upsampling, https://distill.pub/2016/deconv-checkerboard/
 
 Dumoulin, V., Shlens, J., & Kudlur, M. (2017). A Learned Representation For Artistic Style. ArXiv, abs/1610.07629.
 
-## Normalization
+### Normalization
 Sergey Ioffe and Christian Szegedy. Batch normalization: Accelerating deep network training by reducing internal covariate shift. In ICML, 2015.
 
 Jimmy Lei Ba, Jamie Ryan Kiros, and Geoffrey E Hinton. Layer normalization. arXiv preprint arXiv:1607.06450, 2016.
@@ -147,14 +149,14 @@ DmitryUlyanov,AndreaVedaldi,andVictorS.Lempitsky.Instance normalization:Themissi
 
 Yuxin Wu and Kaiming He. Group normalization. arXiv preprint arXiv:1803.08494, 2018.
 
-## Faster RCNN
+### Faster RCNN
 Ren, S., He, K., Girshick, R., & Sun, J. (2016). Faster r-cnn: Towards real-time object detection with region proposal networks. IEEE transactions on pattern analysis and machine intelligence, 39(6), 1137-1149.
 
 Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Jian Sun. Deep residual learning for image recognition. In CVPR, 2016.
 
 Lin, T., Dollár, P., Girshick, R.B., He, K., Hariharan, B., & Belongie, S.J. (2017). Feature Pyramid Networks for Object Detection. 2017 IEEE Conference on Computer Vision and Pattern Recognition (CVPR), 936-944.
 
-## Multitask Cascaded Convolutional Networks (MTCNN)
+### Multitask Cascaded Convolutional Networks (MTCNN)
 Zhang, K., Zhang, Z., Li, Z., & Qiao, Y. (2016). Joint Face Detection and Alignment Using Multitask Cascaded Convolutional Networks. IEEE Signal Processing Letters, 23, 1499-1503.
 
 
