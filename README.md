@@ -1,4 +1,4 @@
-# Changes on this Branch
+## Changes on this Branch
 1. Add Batch-Instance Normalization capability. Batch-Instance Normalization on stylized images can improve object detection task on these images, for better detection of the pre-transformed objects. This is accomplished by adding and performing more batch norm versus instance norm at certain layers through learnable weights. The model can still use the default Instance Normalization only with --IN flag during training and inference.
 2. The feed forward netowrk uses nearest neighbor to up size the image, then do a same size conv2d op. Instead of doing a conv2d_transpose op.
 3. Remove the unnesssary total variation denoising regularization loss, due to #2 improvement.
@@ -9,7 +9,7 @@ This project investigated the effect of Batch-Instance Normalization with object
 
 It runs on Tensorflow 2. Other requirements to run this package incldue OpenCV, Pillow, scipy, and numpy.
 
-# run_style.py
+## run_style.py
 Usage: python run_style.py [input_image]
 
 Use run.py for evaluating single or multiple trained stylized feed-forward networks (checkpoints). You just need to update the list of checkpoints name at line 19 of run_style.py to your checkpoint names.
@@ -94,6 +94,8 @@ The purpose of running this model on stylized images is to analyze how much of a
 This MTCNN model is obtained from Python Package Index (PyPI) (https://pypi.org/project/mtcnn/). The model is adapted from the Facenet’s MTCNN implementation. It detects human faces and labels five features of each detected face (two for eyes, one for nose, two for month).
 
 The purpose of this experiment is to find out how well finer resolution image objects can be detected. And human face particularly is usually the most interesting subject of a photo, and each face is usually comparably small, occupying less pixels than many well-define objects, such as a car, a cat, or a dog. So I figure it will be interesting to do this finer, more focused detection task compared to the FasterRCNN. The reason I say more focus is because of MTCNN's three cascaded network detection on one usually small patch of an image.
+
+MTCNN on stylized images see a significant degradation compared to original images. And between different stylized normalizations, there is no observable difference or improvement. I suspect it may due to MTCNN detection sensitivity that eliminates many true postives, and favors only the higher confidence information.
 
 ### mtcnn_warriors.jpg
 #### Content Image
