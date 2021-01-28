@@ -45,29 +45,29 @@ Images with Batch-Instance norm performed indistinguishably to instance norm in 
 <p align='center'>
 <img src = 'content/COCO_train2014_000000000471.jpg' width="300px">
 </p>
-<div align='center'>
+<p align='center'>
 <img src = 'result/COCO_train2014_000000000471_wave_IN.jpg' width="300px">
 <img src = 'result/COCO_train2014_000000000471_wave_BIN.jpg' width="300px">
 <img src = 'result/COCO_train2014_000000000471_wave_BIN_noTVdenoising.jpg' width="300px">
-</div>
+</p>
 
 <p align='center'>
 <img src = 'content/COCO_train2014_000000000722.jpg' width="300px">
 </p>
-<div align='center'>
+<p align='center'>
 <img src = 'result/COCO_train2014_000000000722_wave_IN.jpg' width="300px">
 <img src = 'result/COCO_train2014_000000000722_wave_BIN.jpg' width="300px">
 <img src = 'result/COCO_train2014_000000000722_wave_BIN_noTVdenoising.jpg' width="300px">
-</div>
+</p>
 
 <p align='center'>
 <img src = 'content/tesla3.jpeg' width="300px">
 </p>
-<div align='center'>
+<p align='center'>
 <img src = 'result/tesla3_wave_IN.jpeg' width="300px">
 <img src = 'result/tesla3_wave_BIN.jpeg' width="300px">
 <img src = 'result/tesla3_wave_BIN_noTVdenoising.jpeg' width="300px">
-</div>
+</p>
 
 ## Stylized Image on Object Detection Models
 ### Faster RCNN Model
