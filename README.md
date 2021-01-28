@@ -5,41 +5,44 @@
 4. Improve usability of command line arguments for style.py and evaluate.py.
 5. Clean up and add comments throughout the codes. The comments are useful for someone who wants to study and understand this code.
 
-This project investigated the effect of Batch-Instance Normalization with object recongition task and face detection/alignment task. 
+This project investigated the effect of Batch-Instance Normalization for object recongition task and face detection/alignment task. 
 
-It runs on Tensorflow 2. Other requirements to run this package incldue OpenCV, Pillow, scipy, and numpy.
+It runs on Tensorflow 2. Other requirements to run this package incldue OpenCV, Pillow, scipy, and numpy. Please refer to the master branch for more software requirement information.
 
-## run_style.py
+## Script for running multiple models (run_style.py)
 Usage: python run_style.py [input_image]
 
-Use run.py for evaluating single or multiple trained stylized feed-forward networks (checkpoints). You just need to update the list of checkpoints name at line 19 of run_style.py to your checkpoint names.
+Use run_style.py for evaluating single or multiple trained stylized feed-forward networks (checkpoints). Update the list of model names at line 19 of run_style.py to your model names.
 
-Output images will be named as input images plus the checkpoint name, and will be saved at the "./result" directory.
+Output images will be named in a form of input images plus the checkpoint name, and will be saved at the "./result" directory.
 
 If your model was trained with Instance Normalzation, name your checkpoint directory with "_IN" in the checkpoint folder name, the script uses this property to add a --IN flag for doing loading the Instance Normalization model to fit your checkpoint.
 
 ## Results
-The below images are trained with 2 epochs and a batch size of 4. The no TV denoising one may improve image clarity with higher epochs. I notice content image with too few pixels do not get a good result, such as the ones in COCO training dataset. And perhaps the training isn't enough to generate an equally good image as the denoising one, maybe increase epoch and use a larger batch size can help.
+All models that generated the following images were trained with 2 epochs and a batch size of 4.
+
+Below, images are compared with their normalization counterparts. To be specific, an original content image is compared with one that does Instance Norm, one that does Batch-Instance Norm, and one that does Batch-Instance Norm without total variational denoising.
+
+The first image is the style image used for all the models.
+
+The one image in its own row is the content image, follow by the next row with three stylized images from left to right are produced with models that incoorperate either Instance Norm, Batch-Instance Norm, or Batch-Instance Norm no total variational denoising.
+
+### Note on Total Variational Denoising
+Images trained without TV denoising looks blurry and may improve its clarity with more training epochs, to be as good as the models with denoising. Futhermore, I notice content image with too few pixels do not get a good result, such as the ones in COCO training dataset.
+
+### Note on Image Stylization
+Images with Batch-Instance norm performed indistinguishably to instance norm in style. Additionaly, I observed Batch-Instance norm produce smoother image on reconginzable objects, i.e. objects that we can define with a noun easily or have defined edging structures such as faces. In theory it should produce a more capable object recongnization task if the stylized image is fed as an input. And without total variational denoising, the pictures look grainier, but I suspect it is due to my under-trained feed forward network.
 
 <p align = 'center'>
-<img src = 'style/wave.jpg' width='700'>
+<img src = 'style/wave.jpg' width='600'>
 </p>
 <p align = 'center'>
 Style Image: The Great Wave off Kanagawa by Katsushika Hokusai
 </p>
 
-The below samples compare each image with its normalization counterparts. To be specific, an original content image is compared with one that does Instance Norm, one that does Batch-Instance Norm, and one that does Batch-Instance Norm without total variational denoising.
-
-From stylizing stand point, Batch-Instance norm performed indistinguishably to instance norm in style. Additionaly, I observed Batch-Instance norm produce smoother image on reconginzable objects, i.e. objects that we can define with a noun easily or have defined edging structures such as faces. In theory it should produce a more capable object recongnization task if the stylized image is fed as an input.
-
-However, without total variational denoising, the pictures look grainier.  I suspect it is due to my under-trained feed forward network.
-
-Stylized images from left to right: Instance Norm, Batch-Instance Norm, Batch-Instance Norm no total variational denoising.
-
 <p align='center'>
 <img src = 'content/COCO_train2014_000000000471.jpg' width="300px">
 </p>
-
 <div align='center'>
 <img src = 'result/COCO_train2014_000000000471_wave_IN.jpg' width="300px">
 <img src = 'result/COCO_train2014_000000000471_wave_BIN.jpg' width="300px">
@@ -49,7 +52,6 @@ Stylized images from left to right: Instance Norm, Batch-Instance Norm, Batch-In
 <p align='center'>
 <img src = 'content/COCO_train2014_000000000722.jpg' width="300px">
 </p>
-
 <div align='center'>
 <img src = 'result/COCO_train2014_000000000722_wave_IN.jpg' width="300px">
 <img src = 'result/COCO_train2014_000000000722_wave_BIN.jpg' width="300px">
@@ -59,15 +61,13 @@ Stylized images from left to right: Instance Norm, Batch-Instance Norm, Batch-In
 <p align='center'>
 <img src = 'content/tesla3.jpeg' width="300px">
 </p>
-
 <div align='center'>
 <img src = 'result/tesla3_wave_IN.jpeg' width="300px">
 <img src = 'result/tesla3_wave_BIN.jpeg' width="300px">
 <img src = 'result/tesla3_wave_BIN_noTVdenoising.jpeg' width="300px">
 </div>
 
-
-## Experiment Stylized Image with Object Detection Models
+## Stylized Image on Object Detection Models
 ### Faster RCNN Model
 This Faster RCNN model I use here is taken from [tensorpack](https://github.com/tensorpack/tensorpack/tree/master/examples/FasterRCNN)(R101-FPN). It was trained on COCO train2017 image dataset, and fine-turned from ImageNet pre-trained R101 model, more details can be read in the above link. It uses ResNet-101 and FPN(Feature Pyramid Network) as its backbone.
 
