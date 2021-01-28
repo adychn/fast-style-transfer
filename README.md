@@ -31,14 +31,14 @@ The one image in its own row is the content image, follow by the next row with t
 Images trained without TV denoising looks blurry and may improve its clarity with more training epochs, to be as good as the models with denoising. Futhermore, I notice content image with too few pixels do not get a good result, such as the ones in COCO training dataset.
 
 ### Note on Image Stylization
-Images with Batch-Instance norm performed indistinguishably to instance norm in style. Additionaly, I observed Batch-Instance norm produce smoother image on reconginzable objects, i.e. objects that we can define with a noun easily or have defined edging structures such as faces. In theory it should produce a more capable object recongnization task if the stylized image is fed as an input. And without total variational denoising, the pictures look grainier, but I suspect it is due to my under-trained feed forward network.
-
 <p align = 'center'>
 <img src = 'style/wave.jpg' width='600'>
 </p>
 <p align = 'center'>
 Style Image: The Great Wave off Kanagawa by Katsushika Hokusai
 </p>
+Images with Batch-Instance norm performed indistinguishably to instance norm in style. Additionaly, I observed Batch-Instance norm produce smoother image on reconginzable objects, i.e. objects that we can define with a noun easily or have defined edging structures such as faces. In theory it should produce a more capable object recongnization task if the stylized image is fed as an input. And without total variational denoising, the pictures look grainier, but I suspect it is due to my under-trained feed forward network.
+
 
 <p align='center'>
 <img src = 'content/COCO_train2014_000000000471.jpg' width="300px">
@@ -73,12 +73,14 @@ This Faster RCNN model I use here is taken from [tensorpack](https://github.com/
 
 The purpose of running this model on stylized images is to analyze how much of an improvement Batch-Instance Norm, can help detect objects in a stylized image. The number belongs with each detection bounding box is the confidence score on its detection. As we can see from the images below, Batch-Instance normalized images produce vastly higher confidence scores, and more accurate classification than Instance normalized ones. Instance normalized ones are almost unrecongizable by Faster RCNN. However, Batch-Instance normalization is still far from to origial content image performance. I think it can be improved upon with more epoch training and parameter fine-tuning on the stylized feed forward net with Batch-Instance Norm. The below results were produced with no fine turning, and just kept the parameters the same between instance Norm model and batch-instance norm model.
 
-#### Content Image
+Images compared here are the orignal content image, stylized image from Instance Norm model, and stylized image from Batch-Instance Norm model without TV denoising.
+
+<div align='center'>
 <img src = 'result/FasterRCNN_result/COCO_train2014_000000000471/COCO_train2014_000000000471_f.png'>
-#### With Instance Norm
 <img src = 'result/FasterRCNN_result/COCO_train2014_000000000471/COCO_train2014_000000000471_wave_IN_f.png'>
-#### With Batch-Instance Norm no total variational denoising
 <img src = 'result/FasterRCNN_result/COCO_train2014_000000000471/COCO_train2014_000000000471_wave_BIN_f.png'>
+</div>
+
 
 #### Content Image
 <img src = 'result/FasterRCNN_result/COCO_train2014_000000000722/COCO_train2014_000000000722_f.png'>
