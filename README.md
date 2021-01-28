@@ -23,10 +23,6 @@ All models that generated the following images were trained with 2 epochs and a 
 
 Below, images are compared with their normalization counterparts. To be specific, an original content image is compared with one that does Instance Norm, one that does Batch-Instance Norm, and one that does Batch-Instance Norm without total variational denoising.
 
-The first image is the style image used for all the models.
-
-The one image in its own row is the content image, follow by the next row with three stylized images from left to right are produced with models that incoorperate either Instance Norm, Batch-Instance Norm, or Batch-Instance Norm no total variational denoising.
-
 ### Note on Total Variational Denoising
 Images trained without TV denoising looks blurry and may improve its clarity with more training epochs, to be as good as the models with denoising. Futhermore, I notice content image with too few pixels do not get a good result, such as the ones in COCO training dataset.
 
@@ -35,38 +31,40 @@ Images trained without TV denoising looks blurry and may improve its clarity wit
 <img src = 'style/wave.jpg' width='600'>
 </p>
 <p align = 'center'>
-Style Image: The Great Wave off Kanagawa by Katsushika Hokusai
+The Style Image for all models. The Great Wave off Kanagawa by Katsushika Hokusai.
 </p>
 
 Images with Batch-Instance norm performed indistinguishably to instance norm in style. Additionaly, I observed Batch-Instance norm produce smoother image on reconginzable objects, i.e. objects that we can define with a noun easily or have defined edging structures such as faces. In theory it should produce a more capable object recongnization task if the stylized image is fed as an input. And without total variational denoising, the pictures look grainier, but I suspect it is due to my under-trained feed forward network.
 
 ### Comparing Stylized Images
+The one image in its own row is the content image, follow by the next row with three stylized images from left to right are produced with models that incoorperate either Instance Norm, Batch-Instance Norm, or Batch-Instance Norm no total variational denoising.
+
 <p align='center'>
 <img src = 'content/COCO_train2014_000000000471.jpg' width="300px">
 </p>
-<p align='center'>
+<div align='center'>
 <img src = 'result/COCO_train2014_000000000471_wave_IN.jpg' width="300px">
 <img src = 'result/COCO_train2014_000000000471_wave_BIN.jpg' width="300px">
 <img src = 'result/COCO_train2014_000000000471_wave_BIN_noTVdenoising.jpg' width="300px">
-</p>
+</div>
 
 <p align='center'>
 <img src = 'content/COCO_train2014_000000000722.jpg' width="300px">
 </p>
-<p align='center'>
+<div align='center'>
 <img src = 'result/COCO_train2014_000000000722_wave_IN.jpg' width="300px">
 <img src = 'result/COCO_train2014_000000000722_wave_BIN.jpg' width="300px">
 <img src = 'result/COCO_train2014_000000000722_wave_BIN_noTVdenoising.jpg' width="300px">
-</p>
+</div>
 
 <p align='center'>
 <img src = 'content/tesla3.jpeg' width="300px">
 </p>
-<p align='center'>
+<div align='center'>
 <img src = 'result/tesla3_wave_IN.jpeg' width="300px">
 <img src = 'result/tesla3_wave_BIN.jpeg' width="300px">
 <img src = 'result/tesla3_wave_BIN_noTVdenoising.jpeg' width="300px">
-</p>
+</div>
 
 ## Stylized Image on Object Detection Models
 ### Faster RCNN Model
