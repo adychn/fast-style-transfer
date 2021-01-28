@@ -37,8 +37,10 @@ Images trained without TV denoising looks blurry and may improve its clarity wit
 <p align = 'center'>
 Style Image: The Great Wave off Kanagawa by Katsushika Hokusai
 </p>
-Images with Batch-Instance norm performed indistinguishably to instance norm in style. Additionaly, I observed Batch-Instance norm produce smoother image on reconginzable objects, i.e. objects that we can define with a noun easily or have defined edging structures such as faces. In theory it should produce a more capable object recongnization task if the stylized image is fed as an input. And without total variational denoising, the pictures look grainier, but I suspect it is due to my under-trained feed forward network.
 
+<br>
+Images with Batch-Instance norm performed indistinguishably to instance norm in style. Additionaly, I observed Batch-Instance norm produce smoother image on reconginzable objects, i.e. objects that we can define with a noun easily or have defined edging structures such as faces. In theory it should produce a more capable object recongnization task if the stylized image is fed as an input. And without total variational denoising, the pictures look grainier, but I suspect it is due to my under-trained feed forward network.
+<br>
 
 <p align='center'>
 <img src = 'content/COCO_train2014_000000000471.jpg' width="300px">
@@ -48,7 +50,7 @@ Images with Batch-Instance norm performed indistinguishably to instance norm in 
 <img src = 'result/COCO_train2014_000000000471_wave_BIN.jpg' width="300px">
 <img src = 'result/COCO_train2014_000000000471_wave_BIN_noTVdenoising.jpg' width="300px">
 </div>
-
+<br>
 <p align='center'>
 <img src = 'content/COCO_train2014_000000000722.jpg' width="300px">
 </p>
@@ -57,7 +59,7 @@ Images with Batch-Instance norm performed indistinguishably to instance norm in 
 <img src = 'result/COCO_train2014_000000000722_wave_BIN.jpg' width="300px">
 <img src = 'result/COCO_train2014_000000000722_wave_BIN_noTVdenoising.jpg' width="300px">
 </div>
-
+<br>
 <p align='center'>
 <img src = 'content/tesla3.jpeg' width="300px">
 </p>
@@ -75,12 +77,13 @@ The purpose of running this model on stylized images is to analyze how much of a
 
 Images compared here are the orignal content image, stylized image from Instance Norm model, and stylized image from Batch-Instance Norm model without TV denoising.
 
+<br>
 <div align='center'>
 <img src = 'result/FasterRCNN_result/COCO_train2014_000000000471/COCO_train2014_000000000471_f.png'>
 <img src = 'result/FasterRCNN_result/COCO_train2014_000000000471/COCO_train2014_000000000471_wave_IN_f.png'>
 <img src = 'result/FasterRCNN_result/COCO_train2014_000000000471/COCO_train2014_000000000471_wave_BIN_f.png'>
 </div>
-
+<br>
 
 #### Content Image
 <img src = 'result/FasterRCNN_result/COCO_train2014_000000000722/COCO_train2014_000000000722_f.png'>
