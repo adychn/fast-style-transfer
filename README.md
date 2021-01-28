@@ -82,19 +82,20 @@ Images compared here are the orignal content image, stylized image from Instance
 </div>
 <br>
 
-#### Content Image
+<br>
+<div align='center'>
 <img src = 'result/FasterRCNN_result/COCO_train2014_000000000722/COCO_train2014_000000000722_f.png'>
-#### With Instance Norm
 <img src = 'result/FasterRCNN_result/COCO_train2014_000000000722/COCO_train2014_000000000722_wave_IN_f.png'>
-#### With Batch-Instance Norm no total variational denoising
 <img src = 'result/FasterRCNN_result/COCO_train2014_000000000722/COCO_train2014_000000000722_wave_BIN_f.png'>
+</div>
+<br>
 
-#### Content Image
+<br>
+<div align='center'>
 <img src = 'result/FasterRCNN_result/COCO_train2014_000000001580/COCO_train2014_000000001580_f.png'>
-#### After Instance Norm
 <img src = 'result/FasterRCNN_result/COCO_train2014_000000001580/COCO_train2014_000000001580_wave_IN_f.png'>
-#### After Batch-Instance Norm no total variational denoising
 <img src = 'result/FasterRCNN_result/COCO_train2014_000000001580/COCO_train2014_000000001580_wave_BIN_f.png'>
+</div>
 
 ### MTCNN Model
 This MTCNN model is obtained from Python Package Index (PyPI) (https://pypi.org/project/mtcnn/). The model is adapted from the Facenet’s MTCNN implementation. It detects human faces and labels five features of each detected face (two for eyes, one for nose, two for month).
