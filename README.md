@@ -21,8 +21,13 @@ If your model was trained with Instance Normalzation, name your checkpoint direc
 ## Results
 The below images are trained with 2 epochs and a batch size of 4. The no TV denoising one may improve image clarity with higher epochs. I notice content image with too few pixels do not get a good result, such as the ones in COCO training dataset. And perhaps the training isn't enough to generate an equally good image as the denoising one, maybe increase epoch and use a larger batch size can help.
 
-### Style Image
-<img src = 'style/wave.jpg'>
+### Style Image ###
+<p align = 'center'>
+<img src = 'style/wave.jpg' width='700'>
+</p>
+<p align = 'center'>
+The Great Wave off Kanagawa by Katsushika Hokusai
+</p>
 
 The below samples compare each image with its normalization counterparts. To be specific, an original content image is compared with one that does Instance Norm, one that does Batch-Instance Norm, and one that does Batch-Instance Norm without total variational denoising.
 
@@ -30,23 +35,34 @@ From stylizing stand point, Batch-Instance norm performed indistinguishably to i
 
 However, without total variational denoising, the pictures look grainier.  I suspect it is due to my under-trained feed forward network.
 
-#### Content Image
-<img src = 'content/COCO_train2014_000000000471.jpg'>
-#### With Instance Norm
-<img src = 'result/COCO_train2014_000000000471_wave_IN.jpg'>
-#### With Batch-Instance Norm
-<img src = 'result/COCO_train2014_000000000471_wave_BIN.jpg'>
-#### With Batch-Instance Norm no total variational denoising
-<img src = 'result/COCO_train2014_000000000471_wave_BIN_noTVdenoising.jpg'>
+<p align='center'>
+<img src = 'content/COCO_train2014_000000000471.jpg' width="300px">
+</p>
 
-#### Content Image
-<img src = 'content/COCO_train2014_000000000722.jpg'>
-#### With Instance Norm
-<img src = 'result/COCO_train2014_000000000722_wave_IN.jpg'>
-#### With Batch-Instance Norm
-<img src = 'result/COCO_train2014_000000000722_wave_BIN.jpg'>
-#### With Batch-Instance Norm no total variational denoising
-<img src = 'result/COCO_train2014_000000000722_wave_BIN_noTVdenoising.jpg'>
+<div align='center'>
+<img src = 'result/COCO_train2014_000000000471_wave_IN.jpg' width="300px">
+<img src = 'result/COCO_train2014_000000000471_wave_BIN.jpg' width="300px">
+<img src = 'result/COCO_train2014_000000000471_wave_BIN_noTVdenoising.jpg' width="300px">
+</div>
+<p align='center>
+Instance Norm, Batch-Instance Norm, Batch-Instance Norm no total variational denoising
+</p>
+
+
+
+<p align='center'>
+<img src = 'content/COCO_train2014_000000000722.jpg' width="300px">
+</p>
+
+<div align='center'>
+<img src = 'result/COCO_train2014_000000000722_wave_IN.jpg' width="300px">
+<img src = 'result/COCO_train2014_000000000722_wave_BIN.jpg' width="300px">
+<img src = 'result/COCO_train2014_000000000722_wave_BIN_noTVdenoising.jpg' width="300px">
+</div>
+<p align='center>
+Instance Norm, Batch-Instance Norm, Batch-Instance Norm no total variational denoising
+</p>
+
 
 #### Content Image
 <img src = 'content/tesla3.jpeg'>
