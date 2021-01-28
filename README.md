@@ -39,9 +39,8 @@ Style Image: The Great Wave off Kanagawa by Katsushika Hokusai
 </p>
 
 Images with Batch-Instance norm performed indistinguishably to instance norm in style. Additionaly, I observed Batch-Instance norm produce smoother image on reconginzable objects, i.e. objects that we can define with a noun easily or have defined edging structures such as faces. In theory it should produce a more capable object recongnization task if the stylized image is fed as an input. And without total variational denoising, the pictures look grainier, but I suspect it is due to my under-trained feed forward network.
-<br>
-<br>
 
+### Comparing Stylized Images
 <p align='center'>
 <img src = 'content/COCO_train2014_000000000471.jpg' width="300px">
 </p>
