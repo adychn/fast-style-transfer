@@ -37,33 +37,33 @@ The Style Image for all models. The Great Wave off Kanagawa by Katsushika Hokusa
 Images with Batch-Instance norm performed indistinguishably to instance norm in style. Additionaly, I observed Batch-Instance norm produce smoother image on reconginzable objects, i.e. objects that we can define with a noun easily or have defined edging structures such as faces. In theory it should produce a more capable object recongnization task if the stylized image is fed as an input. And without total variational denoising, the pictures look grainier, but I suspect it is due to my under-trained feed forward network.
 
 ### Comparing Stylized Images
-The one image in its own row is the content image, follow by the next row with three stylized images from left to right are produced with models that incoorperate either Instance Norm, Batch-Instance Norm, or Batch-Instance Norm no total variational denoising.
+For each group, a content image follows by three stylized iamges. From left to right are produced with models that incoorperate either Instance Norm, Batch-Instance Norm, or Batch-Instance Norm no total variational denoising.
 
 <p align='center'>
-<img src = 'content/COCO_train2014_000000000471.jpg' width="300px">
+<img src = 'content/COCO_train2014_000000000471.jpg' width="250px">
 </p>
 <p align='center'>
-<img src = 'result/COCO_train2014_000000000471_wave_IN.jpg' width="300px">
-<img src = 'result/COCO_train2014_000000000471_wave_BIN.jpg' width="300px">
-<img src = 'result/COCO_train2014_000000000471_wave_BIN_noTVdenoising.jpg' width="300px">
-</p>
-
-<p align='center'>
-<img src = 'content/COCO_train2014_000000000722.jpg' width="300px">
-</p>
-<p align='center'>
-<img src = 'result/COCO_train2014_000000000722_wave_IN.jpg' width="300px">
-<img src = 'result/COCO_train2014_000000000722_wave_BIN.jpg' width="300px">
-<img src = 'result/COCO_train2014_000000000722_wave_BIN_noTVdenoising.jpg' width="300px">
+<img src = 'result/COCO_train2014_000000000471_wave_IN.jpg' width="250px">
+<img src = 'result/COCO_train2014_000000000471_wave_BIN.jpg' width="250px">
+<img src = 'result/COCO_train2014_000000000471_wave_BIN_noTVdenoising.jpg' width="250px">
 </p>
 
 <p align='center'>
-<img src = 'content/tesla3.jpeg' width="300px">
+<img src = 'content/COCO_train2014_000000000722.jpg' width="250px">
 </p>
 <p align='center'>
-<img src = 'result/tesla3_wave_IN.jpeg' width="300px">
-<img src = 'result/tesla3_wave_BIN.jpeg' width="300px">
-<img src = 'result/tesla3_wave_BIN_noTVdenoising.jpeg' width="300px">
+<img src = 'result/COCO_train2014_000000000722_wave_IN.jpg' width="250px">
+<img src = 'result/COCO_train2014_000000000722_wave_BIN.jpg' width="250px">
+<img src = 'result/COCO_train2014_000000000722_wave_BIN_noTVdenoising.jpg' width="250px">
+</p>
+
+<p align='center'>
+<img src = 'content/tesla3.jpeg' width="250px">
+</p>
+<p align='center'>
+<img src = 'result/tesla3_wave_IN.jpeg' width="250px">
+<img src = 'result/tesla3_wave_BIN.jpeg' width="250px">
+<img src = 'result/tesla3_wave_BIN_noTVdenoising.jpeg' width="250px">
 </p>
 
 ## Stylized Image on Object Detection Models
@@ -72,7 +72,7 @@ This Faster RCNN model I use here is taken from [tensorpack](https://github.com/
 
 The purpose of running this model on stylized images is to analyze how much of an improvement Batch-Instance Norm, can help detect objects in a stylized image. The number belongs with each detection bounding box is the confidence score on its detection. As we can see from the images below, Batch-Instance normalized images produce vastly higher confidence scores, and more accurate classification than Instance normalized ones. Instance normalized ones are almost unrecongizable by Faster RCNN. However, Batch-Instance normalization is still far from to origial content image performance. I think it can be improved upon with more epoch training and parameter fine-tuning on the stylized feed forward net with Batch-Instance Norm. The below results were produced with no fine turning, and just kept the parameters the same between instance Norm model and batch-instance norm model.
 
-Images compared here are the orignal content image, stylized image from Instance Norm model, and stylized image from Batch-Instance Norm model without TV denoising.
+In each group, from top to bottom are the original content image, the stylized image from Instance Norm model, and the stylized image from Batch-Instance Norm model without TV denoising.
 
 <br>
 <div align='center'>
@@ -104,26 +104,31 @@ The purpose of this experiment is to find out how well finer resolution image ob
 
 MTCNN on stylized images see a significant degradation compared to original images. And between different stylized normalizations, there is no observable difference or improvement. I suspect it may due to MTCNN detection sensitivity that eliminates many true postives, and favors only the higher confidence information.
 
-#### Content Image
+In each group, from top to bottom are the original content image, the stylized image from Instance Norm model, and the stylized image from Batch-Instance Norm model without TV denoising.
+
+<br>
+<div align='center'>
 <img src = 'result/MTCNN_result/mtcnn_warriors.jpg'>
-#### With Instance Norm
 <img src = 'result/MTCNN_result/mtcnn_warriors_wave_IN.jpg'>
-#### With Batch-Instance Norm no total variational denoising
 <img src = 'result/MTCNN_result/mtcnn_warriors_wave_BIN.jpg'>
+</div>
+<br>
 
-#### Content Image
+<br>
+<div align='center'>
 <img src = 'result/MTCNN_result/mtcnn_nba.jpg'>
-#### With Instance Norm
 <img src = 'result/MTCNN_result/mtcnn_nba_wave_IN.jpg'>
-#### With Batch-Instance Norm no total variational denoising
 <img src = 'result/MTCNN_result/mtcnn_nba_wave_BIN.jpg'>
+</div>
+<br>
 
-#### Content Image
+<br>
+<div align='center'>
 <img src = 'result/MTCNN_result/mtcnn_Bipolar-Diversity.jpg'>
-#### With Instance Norm
 <img src = 'result/MTCNN_result/mtcnn_Bipolar-Diversity_wave_IN.jpg'>
-#### With Batch-Instance Norm no total variational denoising
 <img src = 'result/MTCNN_result/mtcnn_Bipolar-Diversity_wave_BIN.jpg'>
+</div>
+<br>
 
 ## Thoughts on generating a single feed forward network for many styles
 Since this work is a single feed forward network for a style, I thought I will share my opinions on a netowrk for multiple styles, particularly from reading the paper "A Learned Representation For Artistic Style" by Google.
