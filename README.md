@@ -37,7 +37,12 @@ The Style Image for all models. The Great Wave off Kanagawa by Katsushika Hokusa
 Images with Batch-Instance norm performed indistinguishably to instance norm in style. Additionaly, I observed Batch-Instance norm produce smoother image on reconginzable objects, i.e. objects that we can define with a noun easily or have defined edging structures such as faces. In theory it should produce a more capable object recongnization task if the stylized image is fed as an input. And without total variational denoising, the pictures look grainier, but I suspect it is due to my under-trained feed forward network.
 
 ### Comparing Stylized Images
-For each group, a content image follows by three stylized iamges. From left to right are produced with models that incoorperate either Instance Norm, Batch-Instance Norm, or Batch-Instance Norm no total variational denoising.
+For each group, a content image follows by three stylized iamges. 
+
+From left to right are produced with models that uses this normaliztion:
+* Instance Norm
+* Batch-Instance Norm
+* Batch-Instance Norm no total variational denoising.
 
 <p align='center'>
 <img src = 'content/COCO_train2014_000000000471.jpg' width="250px">
@@ -72,7 +77,10 @@ This Faster RCNN model I use here is taken from [tensorpack](https://github.com/
 
 The purpose of running this model on stylized images is to analyze how much of an improvement Batch-Instance Norm, can help detect objects in a stylized image. The number belongs with each detection bounding box is the confidence score on its detection. As we can see from the images below, Batch-Instance normalized images produce vastly higher confidence scores, and more accurate classification than Instance normalized ones. Instance normalized ones are almost unrecongizable by Faster RCNN. However, Batch-Instance normalization is still far from to origial content image performance. I think it can be improved upon with more epoch training and parameter fine-tuning on the stylized feed forward net with Batch-Instance Norm. The below results were produced with no fine turning, and just kept the parameters the same between instance Norm model and batch-instance norm model.
 
-In each group, from top to bottom are the original content image, the stylized image from Instance Norm model, and the stylized image from Batch-Instance Norm model without TV denoising.
+In each group, from top to bottom are:
+* Original content image
+* Stylized image from Instance Norm model
+* Stylized image from Batch-Instance Norm model without TV denoising.
 
 <br>
 <div align='center'>
@@ -104,7 +112,10 @@ The purpose of this experiment is to find out how well finer resolution image ob
 
 MTCNN on stylized images see a significant degradation compared to original images. And between different stylized normalizations, there is no observable difference or improvement. I suspect it may due to MTCNN detection sensitivity that eliminates many true postives, and favors only the higher confidence information.
 
-In each group, from top to bottom are the original content image, the stylized image from Instance Norm model, and the stylized image from Batch-Instance Norm model without TV denoising.
+In each group, from top to bottom are:
+* Original content image
+* Stylized image from Instance Norm model
+* Stylized image from Batch-Instance Norm model without TV denoising.
 
 <br>
 <div align='center'>
