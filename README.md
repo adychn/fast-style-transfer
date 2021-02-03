@@ -78,31 +78,31 @@ This Faster RCNN model I use here is taken from [tensorpack](https://github.com/
 The purpose of running this model on stylized images is to analyze how much of an improvement Batch-Instance Norm, can help detect objects in a stylized image. The number belongs with each detection bounding box is the confidence score on its detection. As we can see from the images below, Batch-Instance normalized images produce vastly higher confidence scores, and more accurate classification than Instance normalized ones. Instance normalized ones are almost unrecongizable by Faster RCNN. However, Batch-Instance normalization is still far from to origial content image performance. I think it can be improved upon with more epoch training and parameter fine-tuning on the stylized feed forward net with Batch-Instance Norm. The below results were produced with no fine turning, and just kept the parameters the same between instance Norm model and batch-instance norm model.
 
 In each group, from top to bottom are:
-* Original content image
+* Original content image (best)
 * Stylized image from Instance Norm model
-* Stylized image from Batch-Instance Norm model without TV denoising.
+* Stylized image from Batch-Instance Norm model without TV denoising. (better)
 
 <br>
 <div align='center'>
-<img src = 'result/FasterRCNN_result/COCO_train2014_000000000471/COCO_train2014_000000000471_f.png'>
-<img src = 'result/FasterRCNN_result/COCO_train2014_000000000471/COCO_train2014_000000000471_wave_IN_f.png'>
-<img src = 'result/FasterRCNN_result/COCO_train2014_000000000471/COCO_train2014_000000000471_wave_BIN_f.png'>
+<img src = 'result/FasterRCNN_result/COCO_train2014_000000000471/COCO_train2014_000000000471_f.png' width="750px">
+<img src = 'result/FasterRCNN_result/COCO_train2014_000000000471/COCO_train2014_000000000471_wave_IN_f.png' width="750px">
+<img src = 'result/FasterRCNN_result/COCO_train2014_000000000471/COCO_train2014_000000000471_wave_BIN_f.png' width="750px">
 </div>
 <br>
 
 <br>
 <div align='center'>
-<img src = 'result/FasterRCNN_result/COCO_train2014_000000000722/COCO_train2014_000000000722_f.png'>
-<img src = 'result/FasterRCNN_result/COCO_train2014_000000000722/COCO_train2014_000000000722_wave_IN_f.png'>
-<img src = 'result/FasterRCNN_result/COCO_train2014_000000000722/COCO_train2014_000000000722_wave_BIN_f.png'>
+<img src = 'result/FasterRCNN_result/COCO_train2014_000000000722/COCO_train2014_000000000722_f.png' width="750px">
+<img src = 'result/FasterRCNN_result/COCO_train2014_000000000722/COCO_train2014_000000000722_wave_IN_f.png' width="750px">
+<img src = 'result/FasterRCNN_result/COCO_train2014_000000000722/COCO_train2014_000000000722_wave_BIN_f.png' width="750px">
 </div>
 <br>
 
 <br>
 <div align='center'>
-<img src = 'result/FasterRCNN_result/COCO_train2014_000000001580/COCO_train2014_000000001580_f.png'>
-<img src = 'result/FasterRCNN_result/COCO_train2014_000000001580/COCO_train2014_000000001580_wave_IN_f.png'>
-<img src = 'result/FasterRCNN_result/COCO_train2014_000000001580/COCO_train2014_000000001580_wave_BIN_f.png'>
+<img src = 'result/FasterRCNN_result/COCO_train2014_000000001580/COCO_train2014_000000001580_f.png' width="750px">
+<img src = 'result/FasterRCNN_result/COCO_train2014_000000001580/COCO_train2014_000000001580_wave_IN_f.png' width="750px">
+<img src = 'result/FasterRCNN_result/COCO_train2014_000000001580/COCO_train2014_000000001580_wave_BIN_f.png' width="750px">
 </div>
 
 ### MTCNN Model
@@ -113,23 +113,23 @@ The purpose of this experiment is to find out how well finer resolution image ob
 MTCNN on stylized images see a significant degradation compared to original images. And between different stylized normalizations, there is no observable difference or improvement. I suspect it may due to MTCNN detection sensitivity that eliminates many true postives, and favors only the higher confidence information.
 
 In each group, from top to bottom are:
-* Original content image
+* Original content image (best)
 * Stylized image from Instance Norm model
 * Stylized image from Batch-Instance Norm model without TV denoising.
 
 <br>
 <div align='center'>
-<img src = 'result/MTCNN_result/mtcnn_warriors.jpg'>
-<img src = 'result/MTCNN_result/mtcnn_warriors_wave_IN.jpg'>
-<img src = 'result/MTCNN_result/mtcnn_warriors_wave_BIN.jpg'>
+<img src = 'result/MTCNN_result/mtcnn_warriors.jpg' width="750px">
+<img src = 'result/MTCNN_result/mtcnn_warriors_wave_IN.jpg' width="750px">
+<img src = 'result/MTCNN_result/mtcnn_warriors_wave_BIN.jpg' width="750px">
 </div>
 <br>
 
 <br>
 <div align='center'>
-<img src = 'result/MTCNN_result/mtcnn_nba.jpg'>
-<img src = 'result/MTCNN_result/mtcnn_nba_wave_IN.jpg'>
-<img src = 'result/MTCNN_result/mtcnn_nba_wave_BIN.jpg'>
+<img src = 'result/MTCNN_result/mtcnn_nba.jpg' width="750px">
+<img src = 'result/MTCNN_result/mtcnn_nba_wave_IN.jpg' width="750px">
+<img src = 'result/MTCNN_result/mtcnn_nba_wave_BIN.jpg' width="750px">
 </div>
 <br>
 
