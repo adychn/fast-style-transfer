@@ -171,6 +171,8 @@ DmitryUlyanov,AndreaVedaldi,andVictorS.Lempitsky.Instance normalization:Themissi
 
 Yuxin Wu and Kaiming He. Group normalization. arXiv preprint arXiv:1803.08494, 2018.
 
+Nam, H., & Kim, H. E. (2018). Batch-instance normalization for adaptively style-invariant neural networks. arXiv preprint arXiv:1805.07925.
+
 ### Faster RCNN
 Ren, S., He, K., Girshick, R., & Sun, J. (2016). Faster r-cnn: Towards real-time object detection with region proposal networks. IEEE transactions on pattern analysis and machine intelligence, 39(6), 1137-1149.
 
